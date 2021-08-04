@@ -4,8 +4,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="nonebot_plugin_heweather",
-    version="0.0.1",
+    name="nonebot-plugin-heweather",
+    version="0.0.2",
     author="kexue",
     author_email="xana278@qq.com",
     description="Get Heweather information and convert to pictures",
