@@ -1,0 +1,6 @@
+[build-system]
+requires = [
+    "Pillow",
+    "httpx"
+]
+build-backend = "setuptools.build_meta"
