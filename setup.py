@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="nonebot-plugin-heweather",
-    version="0.0.3",
+    version="0.0.4",
     author="kexue",
     author_email="xana278@qq.com",
     description="Get Heweather information and convert to pictures",
@@ -20,7 +20,11 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    # package_dir={"": "nonebot_plugin_heweather"},
-    # packages=setuptools.find_packages(where="nonebot_plugin_heweather"),
+    packages=['nonebot_plugin_heweather'],
     python_requires=">=3.9",
+    install_requires=[
+        'nonebot2',
+        'Pillow',
+        'httpx'
+    ],
 )

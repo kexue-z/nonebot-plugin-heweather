@@ -1,4 +1,5 @@
 import nonebot
+from nonebot.log import logger
 from PIL import (
     Image, 
     ImageDraw, 
@@ -9,17 +10,19 @@ font = nonebot.get_driver().config.qweather_font
 icon_dir = nonebot.get_driver().config.qweather_icon_dir 
 
 if not font:
-    font = str(Path("data/heweather/font.ttc").absolute()) + '/'
+    font = str(Path("data/heweather/font.ttc").absolute())
 if not icon_dir:
     icon_dir = str(Path("data/heweather/icon").absolute()) + '/'
 
-s20 = ImageFont.truetype(font, 20)
-s30 = ImageFont.truetype(font, 30)
-s40 = ImageFont.truetype(font, 40)
-s50 = ImageFont.truetype(font, 50)
-s100 = ImageFont.truetype(font, 100)
-
-
+try:
+    s20 = ImageFont.truetype(font, 20)
+    s30 = ImageFont.truetype(font, 30)
+    s40 = ImageFont.truetype(font, 40)
+    s50 = ImageFont.truetype(font, 50)
+    s100 = ImageFont.truetype(font, 100)
+except OSError:
+    raise OSError(f'请检查字体文件和图标文件是否正确放置或配置qweather_font和qweather_icon_dir\n路径:\n{font}\n{icon_dir}')
+    
 background_hight=700
 background_width=1160
 mid_box_height=154

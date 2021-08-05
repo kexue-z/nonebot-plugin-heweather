@@ -3,6 +3,8 @@ import asyncio
 import nonebot
 
 apikey = nonebot.get_driver().config.qweather_apikey
+if not apikey:
+    raise ValueError(f'请在环境变量中添加 qweather_apikey 参数')
 url_weather_api = 'https://devapi.qweather.com/v7/weather/'
 url_geoapi = 'https://geoapi.qweather.com/v2/city/'
 
