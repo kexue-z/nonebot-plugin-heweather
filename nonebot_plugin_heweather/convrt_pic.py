@@ -3,10 +3,15 @@ from PIL import (
     Image, 
     ImageDraw, 
     ImageFont)
-
+from pathlib import Path
 
 font = nonebot.get_driver().config.qweather_font
 icon_dir = nonebot.get_driver().config.qweather_icon_dir 
+
+if not font:
+    font = str(Path("data/heweather/font.ttc").absolute()) + '/'
+if not icon_dir:
+    icon_dir = str(Path("data/heweather/icon").absolute()) + '/'
 
 s20 = ImageFont.truetype(font, 20)
 s30 = ImageFont.truetype(font, 30)

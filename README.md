@@ -1,4 +1,4 @@
-# nonebot-plugins-heweather
+# nonebot-plugin-heweather
 
 获取和风天气信息并转换为图片
 
@@ -14,6 +14,8 @@ QWEATHER_APIKEY = &key=xxx
 
 ## 字体文件
 
+在`resource`里
+
 ```
 QWEATHER_FONT = "./data/msyh.ttf'
 ```
@@ -22,6 +24,8 @@ QWEATHER_FONT = "./data/msyh.ttf'
 - 建议使用微软雅黑
 
 ## 图标文件
+
+在`resource`里
 
 ```
 QWEATHER_ICON_DIR = "./data/icon'
