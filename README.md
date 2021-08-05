@@ -32,3 +32,8 @@ QWEATHER_ICON_DIR = "./data/heweather/icon'
 ```
 
 - [下载地址](https://dev.qweather.com/docs/start/icons/)
+
+# 指令
+
+`天气+地区`
+
