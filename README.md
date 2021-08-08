@@ -15,9 +15,12 @@ QWEATHER_APIKEY = &key=xxx
 ## 字体文件
 
 在`resource`里
+
 默认路径`./data/heweather/font.ttc`
+
+### 环境配置
 ```
-QWEATHER_FONT = "./data/font.ttf'
+QWEATHER_FONT = "./data/font.ttc'
 ```
 
 - 使用 truetype 字体
@@ -26,9 +29,11 @@ QWEATHER_FONT = "./data/font.ttf'
 ## 图标文件
 
 在`resource`里
-默认路径`./data/heweather/icon`
+
+### 环境配置
+默认路径`./data/heweather/icon/`
 ```
-QWEATHER_ICON_DIR = "./data/heweather/icon'
+QWEATHER_ICON_DIR = "./data/heweather/icon/'
 ```
 
 - [下载地址](https://dev.qweather.com/docs/start/icons/)
