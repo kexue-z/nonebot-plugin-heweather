@@ -16,10 +16,8 @@
 
 ## apikey 必须配置 环境配置
 
-注意保留 `&key=`
-
 ```
-QWEATHER_APIKEY = &key=xxx
+QWEATHER_APIKEY = xxx
 ```
 
 ## 字体文件 可选 环境配置
