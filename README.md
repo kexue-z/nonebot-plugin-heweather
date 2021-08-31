@@ -49,7 +49,7 @@ QWEATHER_ICON_DIR = "./data/heweather/icon/'
 默认路径`./data/heweather/backgroud.png`
 
 ```
-QWEATHER_ICON_DIR = "./data/heweather/backgroud.png'
+QWEATHER_BACKGROUD = "./data/heweather/backgroud.png'
 ```
 
 - [下载地址](https://dev.qweather.com/docs/start/icons/)
