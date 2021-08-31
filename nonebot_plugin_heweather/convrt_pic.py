@@ -4,7 +4,7 @@ from PIL import (
     ImageDraw,
     ImageFont
 )
-from pathlib import Path
+from os.path import dirname
 
 
 font = nonebot.get_driver().config.qweather_font
@@ -13,14 +13,14 @@ backgroud_dir = nonebot.get_driver().config.qweather_backgroud
 
 try:
     if not font:
-        font = str(Path("data/heweather/font.ttc").absolute())
+        font = dirname(__file__)+'/resource/font.ttc'
     if not icon_dir:
-        icon_dir = str(Path("data/heweather/icon").absolute()) + '/'
+        icon_dir = dirname(__file__)+'/resource/icon/'
     if not backgroud_dir:
-        backgroud_dir = str(Path("data/heweather/backgroud.png").absolute())
+        backgroud_dir = dirname(__file__)+'/resource/backgroud.png'
 except:
     raise OSError(
-        f"请检查字体、图标、背景是否放置在以下路径或通过环境变量设置路径\nfont: {font}\nicon_dir: {icon_dir}\n backgroud_dir: {backgroud_dir}")
+        f"请检查字体、图标、背景是否放置在以下路径或通过环境变量设置路径{dirname(__file__)}\nfont: {font}\nicon_dir: {icon_dir}\n backgroud_dir: {backgroud_dir}")
 
 
 def size(size: int) -> ImageFont:
