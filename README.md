@@ -2,9 +2,19 @@
 
 获取和风天气信息并转换为图片
 
+# 安装
+
+直接使用 `pip install nonebot-plugins-heweather` 进行安装
+
+然后在 `bot.py` 中 写入 `nonebot.load_plugin("nonebot_plugin_heweather")`
+
+# 指令
+
+`天气+地区`
+
 # 配置
 
-## apikey
+## apikey 必须配置 环境配置
 
 注意保留 `&key=`
 
@@ -12,13 +22,8 @@
 QWEATHER_APIKEY = &key=xxx
 ```
 
-## 字体文件
+## 字体文件 可选 环境配置
 
-在`resource`里
-
-默认路径`./data/heweather/font.ttc`
-
-### 环境配置
 ```
 QWEATHER_FONT = "./data/heweather/font.ttc'
 ```
@@ -26,25 +31,16 @@ QWEATHER_FONT = "./data/heweather/font.ttc'
 - 使用 truetype 字体
 - 建议使用微软雅黑
 
-## 图标文件
-
-在`resource`里
-
-### 环境配置
+## 图标文件 可选 环境配置
 
 **注意**末端的`/`, 代表目录！
-
-默认路径`./data/heweather/icon/`
 
 ```
 QWEATHER_ICON_DIR = "./data/heweather/icon/'
 ```
 
-## 背景文件
+## 背景文件 可选 环境配置
 
-在`resource`里
-
-### 环境配置
 
 默认路径`./data/heweather/backgroud.png`
 
@@ -52,9 +48,4 @@ QWEATHER_ICON_DIR = "./data/heweather/icon/'
 QWEATHER_BACKGROUD = "./data/heweather/backgroud.png'
 ```
 
-- [下载地址](https://dev.qweather.com/docs/start/icons/)
-
-# 指令
-
-`天气+地区`
 
