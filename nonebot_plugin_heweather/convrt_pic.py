@@ -32,10 +32,6 @@ def load_icon(id: str, size: float = 1.0) -> Image:
     return icon
 
 
-def load_background(dir: str) -> Image:
-    im = Image.open(dir)
-
-
 def draw(data: dict) -> Image:
     # load backgroud picture
     im = Image.new("RGB", (1000, 1600), "white")
