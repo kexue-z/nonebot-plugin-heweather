@@ -78,9 +78,15 @@ def draw(data: dict) -> Image:
     icon = load_icon(data["day1"]["iconNight"], size=0.5)
     im.paste(icon, (420, 970), icon)
 
+    item = ["uvIndex", "hum", "precip", "vis"]
+    y = [893, 935, 977, 1018]
+    for i in range(0, 4):
+        icon = load_icon(item[i], 0.125)
+        im.paste(icon, (567, y[i]), icon)
+
     text = f"紫外线指数：\n相对湿度：\n降水量：\n能见度："
     d.multiline_text(
-        (567, 890), text, fill="black", font=size(30), align="left", spacing=10
+        (605, 890), text, fill="black", font=size(30), align="left", spacing=10
     )
     text = (
         f"{data['day1']['uvIndex']}"
@@ -118,9 +124,14 @@ def draw(data: dict) -> Image:
     )
     d.text((490, 1424), "°C", fill="black", font=size(60), anchor="ms")
 
+    y = [1265, 1307, 1349, 1390]
+    for i in range(0, 4):
+        icon = load_icon(item[i], 0.125)
+        im.paste(icon, (567, y[i]), icon)
+
     text = f"紫外线指数：\n相对湿度：\n降水量：\n能见度："
     d.multiline_text(
-        (567, 1262), text, fill="black", font=size(30), align="left", spacing=10
+        (605, 1262), text, fill="black", font=size(30), align="left", spacing=10
     )
     text = (
         f"{data['day2']['uvIndex']}"
