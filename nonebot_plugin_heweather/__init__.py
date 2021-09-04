@@ -35,7 +35,7 @@ async def _(bot: Bot, event: MessageEvent):
         try:
             data = await get_City_Weather(city)
         except KeyError:
-            await weather.finish("这个地方不在天气数据库中哦 >_<")
+            pass
         img = draw(data)
         b64 = img_to_b64(img)
         await weather.finish(MessageSegment.image(b64))
