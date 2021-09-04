@@ -34,10 +34,10 @@ async def _(bot: Bot, event: MessageEvent):
     if city:
         try:
             data = await get_City_Weather(city)
-        except KeyError:
+            img = draw(data)
+            b64 = img_to_b64(img)
+            await weather.finish(MessageSegment.image(b64))
+        except:
             pass
-        img = draw(data)
-        b64 = img_to_b64(img)
-        await weather.finish(MessageSegment.image(b64))
     else:
         await weather.finish("地点是...空气吗?? >_<")
