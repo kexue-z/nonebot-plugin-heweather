@@ -4,7 +4,7 @@
 
 # 安装
 
-直接使用 `pip install nonebot-plugins-heweather` 进行安装
+直接使用 `pip install nonebot-plugin-heweather` 进行安装
 
 然后在 `bot.py` 中 写入 `nonebot.load_plugin("nonebot_plugin_heweather")`
 
