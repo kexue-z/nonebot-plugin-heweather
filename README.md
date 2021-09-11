@@ -23,7 +23,7 @@ QWEATHER_APIKEY = xxx
 ## 字体文件 可选 环境配置
 
 ```
-QWEATHER_FONT = "./data/heweather/font.ttc'
+QWEATHER_FONT = "./data/heweather/font.ttc"
 ```
 
 - 使用 truetype 字体
@@ -34,7 +34,7 @@ QWEATHER_FONT = "./data/heweather/font.ttc'
 **注意**末端的`/`, 代表目录！
 
 ```
-QWEATHER_ICON_DIR = "./data/heweather/icon/'
+QWEATHER_ICON_DIR = "./data/heweather/icon/"
 ```
 
 ## 背景文件 可选 环境配置
@@ -43,7 +43,7 @@ QWEATHER_ICON_DIR = "./data/heweather/icon/'
 默认路径`./data/heweather/backgroud.png`
 
 ```
-QWEATHER_BACKGROUD = "./data/heweather/backgroud.png'
+QWEATHER_BACKGROUD = "./data/heweather/backgroud.png"
 ```
 
 
