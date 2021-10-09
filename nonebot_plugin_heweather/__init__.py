@@ -38,4 +38,11 @@ async def _(bot: Bot, event: MessageEvent):
         await weather.finish("出错了! 检查Log!")
     img = draw(data) if data else None
     b64 = img_to_b64(img) if img else None
-    await weather.finish(MessageSegment.image(b64))
+    if data["warning"]:
+        warning = data["warning"]["warning"]
+        text = ""
+        for i in range(len(warning)):
+            text = f'\n{warning[i]["text"]}'
+        await weather.finish(MessageSegment.image(b64) + MessageSegment.text(text))
+    else:
+        await weather.finish(MessageSegment.image(b64))

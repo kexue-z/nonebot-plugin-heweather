@@ -1,6 +1,5 @@
 from nonebot.log import logger
 from httpx import AsyncClient
-import asyncio
 import nonebot
 
 apikey = nonebot.get_driver().config.qweather_apikey
@@ -28,6 +27,18 @@ async def get_WeatherInfo(api_type: str, city_id: str) -> dict:
         return res.json()
 
 
+# 获取天气灾害预警
+async def get_WeatherWarning(city_id: str) -> dict:
+    async with AsyncClient() as client:
+        res = await client.get(
+            "https://devapi.qweather.com/v7/warning/now",
+            params={"location": city_id, "key": apikey},
+        )
+        res = res.json()
+    return res if res["code"] == "200" and res["warning"] else None
+
+
+# 获取天气信息
 async def get_City_Weather(city: str):
     # global city_id
     city_info = await get_Location(city)
@@ -47,6 +58,18 @@ async def get_City_Weather(city: str):
         now_info = await get_WeatherInfo("now", city_id)
         now = now_info["now"]
 
-        return {"city": city_name, "now": now, "day1": day1, "day2": day2, "day3": day3}
+        # 天气预警信息
+        warning = await get_WeatherWarning(city_id)
+        
+        return {
+            "city": city_name,
+            "now": now,
+            "day1": day1,
+            "day2": day2,
+            "day3": day3,
+            "warning": warning,
+        }
     else:
-        logger.error(f"错误: {city_info['code']} 请参考 https://dev.qweather.com/docs/start/status-code/ ")
+        logger.error(
+            f"错误: {city_info['code']} 请参考 https://dev.qweather.com/docs/start/status-code/ "
+        )
