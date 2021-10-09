@@ -31,13 +31,11 @@ def get_msg(msg) -> str:
 @weather.handle()
 async def _(bot: Bot, event: MessageEvent):
     city = get_msg(event.get_plaintext())
-    if city:
-        try:
-            data = await get_City_Weather(city)
-            img = draw(data)
-            b64 = img_to_b64(img)
-            await weather.finish(MessageSegment.image(b64))
-        except:
-            pass
-    else:
+    if city is None:
         await weather.finish("地点是...空气吗?? >_<")
+    data = await get_City_Weather(city) if city else None
+    if data is None:
+        await weather.finish("出错了! 检查Log!")
+    img = draw(data) if data else None
+    b64 = img_to_b64(img) if img else None
+    await weather.finish(MessageSegment.image(b64))

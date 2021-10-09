@@ -32,18 +32,21 @@ async def get_City_Weather(city: str):
     # global city_id
     city_info = await get_Location(city)
     logger.debug(city_info)
-    city_id = city_info["location"][0]["id"]
-    city_name = city_info["location"][0]["name"]
+    if city_info["code"] == "200":
+        city_id = city_info["location"][0]["id"]
+        city_name = city_info["location"][0]["name"]
 
-    # 3天天气
-    daily_info = await get_WeatherInfo("3d", city_id)
-    daily = daily_info["daily"]
-    day1 = daily[0]
-    day2 = daily[1]
-    day3 = daily[2]
+        # 3天天气
+        daily_info = await get_WeatherInfo("3d", city_id)
+        daily = daily_info["daily"]
+        day1 = daily[0]
+        day2 = daily[1]
+        day3 = daily[2]
 
-    # 实时天气
-    now_info = await get_WeatherInfo("now", city_id)
-    now = now_info["now"]
+        # 实时天气
+        now_info = await get_WeatherInfo("now", city_id)
+        now = now_info["now"]
 
-    return {"city": city_name, "now": now, "day1": day1, "day2": day2, "day3": day3}
+        return {"city": city_name, "now": now, "day1": day1, "day2": day2, "day3": day3}
+    else:
+        logger.error(f"错误: {city_info['code']} 请参考 https://dev.qweather.com/docs/start/status-code/ ")
