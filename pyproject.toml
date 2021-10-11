@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-heweather"
-version = "0.1.9"
+version = "0.1.9.1"
 description = "Get Heweather information and convert to pictures"
 authors = ["kexue <x@kexue.io>"]
 license = "MIT"
