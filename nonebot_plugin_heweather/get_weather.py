@@ -73,3 +73,4 @@ async def get_City_Weather(city: str):
         logger.error(
             f"错误: {city_info['code']} 请参考 https://dev.qweather.com/docs/start/status-code/ "
         )
+        return int(city_info["code"])

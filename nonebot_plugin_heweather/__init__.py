@@ -33,9 +33,12 @@ async def _(bot: Bot, event: MessageEvent):
     city = get_msg(event.get_plaintext())
     if city is None:
         await weather.finish("地点是...空气吗?? >_<")
-    data = await get_City_Weather(city) if city else None
-    if data is None:
-        await weather.finish("出错了! 检查Log!")
+    data = await get_City_Weather(city)
+    if type(data) is int:
+        if data == 404:
+            await weather.finish()
+        else:
+            await weather.finish(f"出错了! 错误代码={data}")
     img = draw(data) if data else None
     b64 = img_to_b64(img) if img else None
     if data["warning"]:
