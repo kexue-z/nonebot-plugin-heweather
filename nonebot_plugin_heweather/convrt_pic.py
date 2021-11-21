@@ -36,7 +36,7 @@ def draw(data: dict) -> Image:
     # load backgroud picture
     im = Image.new("RGB", (1000, 1600), "white")
     d = ImageDraw.Draw(im)
-    bg = Image.open(backgroud_dir)
+    bg = Image.open(backgroud_dir).convert('RGBA')
     im.paste(bg, (0, 0), bg)
 
     # city
