@@ -4,6 +4,7 @@ version = "0.2.1"
 description = "Get Heweather information and convert to pictures"
 authors = ["kexue <x@kexue.io>"]
 license = "MIT"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
