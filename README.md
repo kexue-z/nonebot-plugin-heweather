@@ -29,6 +29,14 @@
 QWEATHER_APIKEY = xxx
 ```
 
+## 是否使用商业版 可选 环境配置
+
+- 不添加则默认开发版
+
+```
+QWEATHER_COMMERCIAL = true
+```
+
 ## 字体文件 可选 环境配置
 
 ```
