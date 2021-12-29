@@ -3,7 +3,7 @@ import re
 from io import BytesIO
 
 from nonebot import on_regex
-from nonebot.adapters.cqhttp import Bot, Message, MessageEvent, MessageSegment
+from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment
 
 from .convrt_pic import *
 from .get_weather import *

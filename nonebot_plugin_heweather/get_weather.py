@@ -5,9 +5,20 @@ import nonebot
 apikey = nonebot.get_driver().config.qweather_apikey
 if not apikey:
     raise ValueError(f"请在环境变量中添加 qweather_apikey 参数")
-url_weather_api = "https://devapi.qweather.com/v7/weather/"
-url_geoapi = "https://geoapi.qweather.com/v2/city/"
 
+commercial: bool = (
+    False if not nonebot.get_driver().config.qweather_commercial else True
+)
+if commercial:
+    url_weather_api = "https://api.qweather.com/v7/weather/"
+    url_geoapi = "https://geoapi.qweather.com/v2/city/"
+    url_weather_warning = "https://api.qweather.com/v7/warning/now"
+    logger.info("使用商业版API")
+else:
+    url_weather_api = "https://devapi.qweather.com/v7/weather/"
+    url_geoapi = "https://geoapi.qweather.com/v2/city/"
+    url_weather_warning = "https://devapi.qweather.com/v7/warning/now"
+    logger.info("使用开发版API")
 
 # 获取城市ID
 async def get_Location(city_kw: str, api_type: str = "lookup") -> dict:
@@ -31,7 +42,7 @@ async def get_WeatherInfo(api_type: str, city_id: str) -> dict:
 async def get_WeatherWarning(city_id: str) -> dict:
     async with AsyncClient() as client:
         res = await client.get(
-            "https://devapi.qweather.com/v7/warning/now",
+            url_weather_warning,
             params={"location": city_id, "key": apikey},
         )
         res = res.json()
@@ -60,7 +71,7 @@ async def get_City_Weather(city: str):
 
         # 天气预警信息
         warning = await get_WeatherWarning(city_id)
-        
+
         return {
             "city": city_name,
             "now": now,
