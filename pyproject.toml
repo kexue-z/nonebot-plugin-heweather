@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-heweather"
-version = "0.4.0.2"
+version = "0.4.0.3"
 description = "Get Heweather information and convert to pictures"
 authors = ["kexue <x@kexue.io>"]
 license = "MIT"
@@ -16,6 +16,7 @@ black = {version = "^21.12b0", allow-prereleases = true}
 nonebot2 = "2.0.0a16"
 nonebot-adapter-cqhttp= "2.0.0a16"
 nonebot-plugin-test = {version = "^0.3.0", source = "aliyun"}
+pillow = {version = "^8.4.0", source = "aliyun"}
 
 [[tool.poetry.source]]
 name = "aliyun"

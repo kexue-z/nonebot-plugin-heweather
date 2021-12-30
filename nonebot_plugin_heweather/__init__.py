@@ -32,10 +32,10 @@ async def _(bot: Bot, event: MessageEvent):
             await weather.finish(f"出错了! 错误代码={data}")
     img = await render(data) if data else None
 
-    from PIL import Image
-    import io
+    # from PIL import Image
+    # import io
 
-    a = Image.open(io.BytesIO(img))
-    a.save("template2pic.png", format="PNG")
+    # a = Image.open(io.BytesIO(img))
+    # a.save("template2pic.png", format="PNG")
 
     await weather.finish(MessageSegment.image(img))
