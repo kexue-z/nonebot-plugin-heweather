@@ -59,12 +59,16 @@ async def get_City_Weather(city: str):
         city_name = city_info["location"][0]["name"]
 
         # 3天天气
-        daily_info = await get_WeatherInfo("3d", city_id)
+        daily_info = await get_WeatherInfo("7d", city_id)
         logger.debug(daily_info)
         daily = daily_info["daily"]
         day1 = daily[0]
         day2 = daily[1]
         day3 = daily[2]
+        day4 = daily[3]
+        day5 = daily[4]
+        day6 = daily[5]
+        day7 = daily[6]
 
         # 实时天气
         now_info = await get_WeatherInfo("now", city_id)
@@ -81,6 +85,10 @@ async def get_City_Weather(city: str):
             "day1": day1,
             "day2": day2,
             "day3": day3,
+            "day4": day4,
+            "day5": day5,
+            "day6": day6,
+            "day7": day7,
             "warning": warning,
         }
     else:

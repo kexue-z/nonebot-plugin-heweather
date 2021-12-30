@@ -9,7 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0.0"
 httpx = ">=0.18.0,<1.0.0"
-Pillow = "^8.3.1"
+nonebot-plugin-htmlrender = "^0.0.3"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.12b0", allow-prereleases = true}
