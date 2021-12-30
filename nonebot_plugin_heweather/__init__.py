@@ -1,21 +1,12 @@
-import base64
 import re
-from io import BytesIO
 
 from nonebot import on_regex
 from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment
 
-from .convrt_pic import *
+from .render_pic import render
 from .get_weather import *
 
 weather = on_regex(r".*?(.*)天气.*?", priority=1)
-
-
-def img_to_b64(pic: Image.Image) -> str:
-    buf = BytesIO()
-    pic.save(buf, format="PNG")
-    base64_str = base64.b64encode(buf.getbuffer()).decode()
-    return "base64://" + base64_str
 
 
 def get_msg(msg) -> str:
@@ -39,13 +30,12 @@ async def _(bot: Bot, event: MessageEvent):
             await weather.finish()
         else:
             await weather.finish(f"出错了! 错误代码={data}")
-    img = draw(data) if data else None
-    b64 = img_to_b64(img) if img else None
-    if data["warning"]:
-        warning = data["warning"]["warning"]
-        text = ""
-        for i in range(len(warning)):
-            text = f'\n{warning[i]["text"]}'
-        await weather.finish(MessageSegment.image(b64) + MessageSegment.text(text))
-    else:
-        await weather.finish(MessageSegment.image(b64))
+    img = await render(data) if data else None
+
+    from PIL import Image
+    import io
+
+    a = Image.open(io.BytesIO(img))
+    a.save("template2pic.png", format="PNG")
+
+    await weather.finish(MessageSegment.image(img))
