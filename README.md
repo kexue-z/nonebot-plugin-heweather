@@ -2,14 +2,11 @@
 
 获取和风天气信息并转换为图片
 
-# 和风天气API图标信息编号变化
+# 使用html+playwright来渲染好看的！
 
-由于和风天气图标ID和图标发生变化
-* 在2021.11.30前创建的API将保持原有信息
-* 之后创建的API将使用新版图标信息
-* 旧版API使用`pip install nonebot-plugin-heweather==0.2.1`进行安装
-* 新版API图标已更新，可直接安装
-* 图标适配还没做，打算重写，先等等吧～
+- 使用了~~自产自销的~~[nonebot-plugin-htmlrender](https://github.com/kexue-z/nonebot-plugin-htmlrender)
+- 需要先保证playwright可以正常运行并在系统（或容器中）存在中文字体
+
 
 # 安装
 
@@ -36,31 +33,4 @@ QWEATHER_APIKEY = xxx
 ```
 QWEATHER_COMMERCIAL = true
 ```
-
-## 字体文件 可选 环境配置
-
-```
-QWEATHER_FONT = "./data/heweather/font.ttc"
-```
-
-- 使用 truetype 字体
-- 建议使用微软雅黑
-
-## 图标文件 可选 环境配置
-
-**注意**末端的`/`, 代表目录！
-
-```
-QWEATHER_ICON_DIR = "./data/heweather/icon/"
-```
-
-## 背景文件 可选 环境配置
-
-
-默认路径`./data/heweather/backgroud.png`
-
-```
-QWEATHER_BACKGROUD = "./data/heweather/backgroud.png"
-```
-
 
