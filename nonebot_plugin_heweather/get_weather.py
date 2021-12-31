@@ -51,16 +51,28 @@ async def get_WeatherWarning(city_id: str) -> dict:
 
 # 获取天气信息
 async def get_City_Weather(city: str):
-    # global city_id
     city_info = await get_Location(city)
     logger.debug(city_info)
-    if city_info["code"] == "200":
-        city_id = city_info["location"][0]["id"]
+    city_id = city_info["location"][0]["id"]
+
+    daily_info = await get_WeatherInfo("7d", city_id)
+    logger.debug(daily_info)
+    
+    now_info = await get_WeatherInfo("now", city_id)
+    logger.debug(now_info)
+    
+    warning = await get_WeatherWarning(city_id)
+    logger.debug(warning)
+    
+    if (
+        city_info["code"] == "200"
+        and daily_info["code"] == "200"
+        and now_info["code"] == "200"
+    ):
         city_name = city_info["location"][0]["name"]
 
         # 3天天气
-        daily_info = await get_WeatherInfo("7d", city_id)
-        logger.debug(daily_info)
+        
         daily = daily_info["daily"]
         day1 = daily[0]
         day2 = daily[1]
@@ -71,13 +83,8 @@ async def get_City_Weather(city: str):
         day7 = daily[6]
 
         # 实时天气
-        now_info = await get_WeatherInfo("now", city_id)
-        logger.debug(now_info)
+        
         now = now_info["now"]
-
-        # 天气预警信息
-        warning = await get_WeatherWarning(city_id)
-        logger.debug(warning)
 
         return {
             "city": city_name,
@@ -93,6 +100,6 @@ async def get_City_Weather(city: str):
         }
     else:
         logger.error(
-            f"错误: {city_info['code']} 请参考 https://dev.qweather.com/docs/start/status-code/ "
+            f'错误: {city_info["code"]},{daily_info["code"]},{now_info["code"]},{warning} 请参考 https://dev.qweather.com/docs/start/status-code/ '
         )
-        return int(city_info["code"])
+        return int(daily_info["code"])
