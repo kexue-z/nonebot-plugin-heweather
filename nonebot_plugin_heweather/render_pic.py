@@ -1,23 +1,28 @@
-from nonebot.plugin import require
 from pathlib import Path
+
+from nonebot.plugin import require
 
 template_to_html = require("nonebot_plugin_htmlrender").template_to_html
 html_to_pic = require("nonebot_plugin_htmlrender").html_to_pic
 
 
 async def render(data) -> bytes:
+    template_path = str(Path(__file__).parent / "templates")
     data = add_week(data)
     html = await template_to_html(
-        template_path=str(Path(__file__).parent / "templates"),
+        template_path=template_path,
         template_name="weather.html",
         now=convert_now(data),
         days=convert_days(data),
         city=convert_city(data),
         warning=convert_warning(data),
     )
-    with open("test.html","w+") as f:
+    with open("test.html", "w+") as f:
         f.write(html)
-    return await html_to_pic(html, viewport={"width": 1000, "height": 300})
+    return await html_to_pic(pagename="weather.html",
+                             html=html,
+                             base_url=f"file://{template_path}",
+                             viewport={"width": 1000, "height": 300})
 
 
 def convert_days(data):
