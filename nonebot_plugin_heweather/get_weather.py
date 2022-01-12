@@ -1,6 +1,8 @@
-from nonebot.log import logger
-from httpx import AsyncClient
+from typing import Union
+
 import nonebot
+from httpx import AsyncClient
+from nonebot.log import logger
 
 apikey = nonebot.get_driver().config.qweather_apikey
 if not apikey:
@@ -20,8 +22,17 @@ else:
     url_weather_warning = "https://devapi.qweather.com/v7/warning/now"
     logger.info("使用开发版API")
 
-# 获取城市ID
-async def get_Location(city_kw: str, api_type: str = "lookup") -> dict:
+
+async def get_location(city_kw: str, api_type: str = "lookup") -> dict:
+    """获取城市ID
+
+    Args:
+        city_kw (str): 关键词
+        api_type (str, optional): 查询方式. Defaults to "lookup".
+
+    Returns:
+        dict: 查询结果列表
+    """
     async with AsyncClient() as client:
         res = await client.get(
             url_geoapi + api_type, params={"location": city_kw, "key": apikey}
@@ -29,8 +40,16 @@ async def get_Location(city_kw: str, api_type: str = "lookup") -> dict:
         return res.json()
 
 
-# 获取天气信息
-async def get_WeatherInfo(api_type: str, city_id: str) -> dict:
+async def get_weatherinfo(api_type: str, city_id: str) -> dict:
+    """获取天气信息
+
+    Args:
+        api_type (str): 类型
+        city_id (str): 城市id
+
+    Returns:
+        dict: 天气信息
+    """
     async with AsyncClient() as client:
         res = await client.get(
             url_weather_api + api_type, params={"location": city_id, "key": apikey}
@@ -38,8 +57,15 @@ async def get_WeatherInfo(api_type: str, city_id: str) -> dict:
         return res.json()
 
 
-# 获取天气灾害预警
-async def get_WeatherWarning(city_id: str) -> dict:
+async def get_weatherwarning(city_id: str) -> dict:
+    """获取天气灾害预警
+
+    Args:
+        city_id (str): 城市id
+
+    Returns:
+        dict: 灾害预警信息
+    """
     async with AsyncClient() as client:
         res = await client.get(
             url_weather_warning,
@@ -49,21 +75,29 @@ async def get_WeatherWarning(city_id: str) -> dict:
     return res if res["code"] == "200" and res["warning"] else None
 
 
-# 获取天气信息
-async def get_City_Weather(city: str):
-    city_info = await get_Location(city)
+async def get_city_weather(city: str) -> Union[dict, int]:
+    """获取天气信息
+
+    Args:
+        city (str): 城市名
+
+    Returns:
+        Union[dict, int]: 返回dict 或 错误代码
+    """    
+    
+    city_info = await get_location(city)
     logger.debug(city_info)
     city_id = city_info["location"][0]["id"]
 
-    daily_info = await get_WeatherInfo("7d", city_id)
+    daily_info = await get_weatherinfo("7d", city_id)
     logger.debug(daily_info)
-    
-    now_info = await get_WeatherInfo("now", city_id)
+
+    now_info = await get_weatherinfo("now", city_id)
     logger.debug(now_info)
-    
-    warning = await get_WeatherWarning(city_id)
+
+    warning = await get_weatherwarning(city_id)
     logger.debug(warning)
-    
+
     if (
         city_info["code"] == "200"
         and daily_info["code"] == "200"
@@ -72,7 +106,7 @@ async def get_City_Weather(city: str):
         city_name = city_info["location"][0]["name"]
 
         # 3天天气
-        
+
         daily = daily_info["daily"]
         day1 = daily[0]
         day2 = daily[1]
@@ -83,7 +117,7 @@ async def get_City_Weather(city: str):
         day7 = daily[6]
 
         # 实时天气
-        
+
         now = now_info["now"]
 
         return {

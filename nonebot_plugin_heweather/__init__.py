@@ -24,7 +24,7 @@ async def _(bot: Bot, event: MessageEvent):
     city = get_msg(event.get_plaintext())
     if city is None:
         await weather.finish("地点是...空气吗?? >_<")
-    data = await get_City_Weather(city)
+    data = await get_city_weather(city)
     if type(data) is int:
         if data == 404:
             await weather.finish()
