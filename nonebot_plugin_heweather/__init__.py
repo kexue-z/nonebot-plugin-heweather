@@ -1,10 +1,11 @@
 import re
 
-from nonebot import on_regex
+from nonebot import get_driver, on_regex
 from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment
+from nonebot.log import logger
 
-from .render_pic import render
 from .get_weather import *
+from .render_pic import render
 
 weather = on_regex(r".*?(.*)天气.*?", priority=1)
 
@@ -31,11 +32,16 @@ async def _(bot: Bot, event: MessageEvent):
         else:
             await weather.finish(f"出错了! 错误代码={data}")
     img = await render(data) if data else None
-
-    # from PIL import Image
-    # import io
-
-    # a = Image.open(io.BytesIO(img))
-    # a.save("template2pic.png", format="PNG")
+    
+    if get_driver().config.debug:
+        debug_save_img(img)
 
     await weather.finish(MessageSegment.image(img))
+
+
+def debug_save_img(img: bytes) -> None:
+    from io import BytesIO
+    from PIL import Image
+    logger.debug("将会保存图片到 weather.png")
+    a = Image.open(BytesIO(img))
+    a.save("weather.png", format="PNG")
