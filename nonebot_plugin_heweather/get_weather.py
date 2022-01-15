@@ -15,11 +15,13 @@ if commercial:
     url_weather_api = "https://api.qweather.com/v7/weather/"
     url_geoapi = "https://geoapi.qweather.com/v2/city/"
     url_weather_warning = "https://api.qweather.com/v7/warning/now"
+    url_air = "https://api.qweather.com/v7/air/now"
     logger.info("使用商业版API")
 else:
     url_weather_api = "https://devapi.qweather.com/v7/weather/"
     url_geoapi = "https://geoapi.qweather.com/v2/city/"
     url_weather_warning = "https://devapi.qweather.com/v7/warning/now"
+    url_air = "https://devapi.qweather.com/v7/air/now"
     logger.info("使用开发版API")
 
 
@@ -75,6 +77,13 @@ async def get_weatherwarning(city_id: str) -> dict:
     return res if res["code"] == "200" and res["warning"] else None
 
 
+async def get_air(city_id: str) -> dict:
+    async with AsyncClient() as client:
+        res = await client.get(url_air, params={"location": city_id, "key": apikey})
+        res = res.json()
+    return res
+
+
 async def get_city_weather(city: str) -> Union[dict, int]:
     """获取天气信息
 
@@ -83,8 +92,8 @@ async def get_city_weather(city: str) -> Union[dict, int]:
 
     Returns:
         Union[dict, int]: 返回dict 或 错误代码
-    """    
-    
+    """
+
     city_info = await get_location(city)
     logger.debug(city_info)
     city_id = city_info["location"][0]["id"]
@@ -95,6 +104,9 @@ async def get_city_weather(city: str) -> Union[dict, int]:
     now_info = await get_weatherinfo("now", city_id)
     logger.debug(now_info)
 
+    air_info = await get_air(city_id)
+    logger.debug(air_info)
+
     warning = await get_weatherwarning(city_id)
     logger.debug(warning)
 
@@ -102,6 +114,7 @@ async def get_city_weather(city: str) -> Union[dict, int]:
         city_info["code"] == "200"
         and daily_info["code"] == "200"
         and now_info["code"] == "200"
+        and air_info["code"] == "200"
     ):
         city_name = city_info["location"][0]["name"]
 
@@ -131,9 +144,28 @@ async def get_city_weather(city: str) -> Union[dict, int]:
             "day6": day6,
             "day7": day7,
             "warning": warning,
+            "air": air_info,
         }
     else:
-        logger.error(
-            f'错误: {city_info["code"]},{daily_info["code"]},{now_info["code"]},{warning} 请参考 https://dev.qweather.com/docs/start/status-code/ '
-        )
-        return int(daily_info["code"])
+        try:
+            logger.error(
+                f"""错误: 
+                {city_info["code"]},
+                {daily_info["code"]},
+                {now_info["code"]},
+                {air_info["code"]},
+                {warning["code"]} 
+                请参考 https://dev.qweather.com/docs/start/status-code/ """
+            )
+            return int(daily_info["code"])
+        except:
+            logger.error(
+                f"""错误: 
+                {city_info["code"]},
+                {daily_info["code"]},
+                {now_info["code"]},
+                {air_info["code"]},
+                {warning} 
+                请参考 https://dev.qweather.com/docs/start/status-code/ """
+            )
+            return int(daily_info["code"])
