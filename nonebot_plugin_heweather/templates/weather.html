@@ -44,6 +44,71 @@
       </div>
     </div>
 
+    {% for w in warning["warning"] %}
+    <div class="warning-box">
+      <div class="warning-side">
+        <div class="warning-icon"><em class="qi-{{ w['type'] }}"></em></div>
+        <div class="warning-header">
+          <p class="warning-title">{{ w['title'] }}</p>
+          <p class="warning-time">{{ w['startTime'] }}</p>
+        </div>
+      </div>
+      <div class="warning-info">
+        <p>{{ w['text'] }}</p>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="air">
+      <div class="air-box-top">
+        {% if air["category"] == "优" %}
+          <span class="air-tag" style="background-color: #95B359;">{{ air["aqi"] }} {{ air["category"] }}</span>
+        {% elif air["category"] == "良" %}
+          <span class="air-tag" style="background-color: #A9A538;">{{ air["aqi"] }} {{ air["category"] }}</span>
+        {% elif air["category"] == "轻度" %}
+          <span class="air-tag" style="background-color: #E0991D;">{{ air["aqi"] }} {{ air["category"] }}</span>
+        {% elif air["category"] == "中度" %}
+          <span class="air-tag" style="background-color: #D96161;">{{ air["aqi"] }} {{ air["category"] }}</span>
+        {% elif air["category"] == "重度" %}
+          <span class="air-tag" style="background-color: #A257D0;">{{ air["aqi"] }} {{ air["category"] }}</span>
+        {% elif air["category"] == "严重" %}
+          <span class="air-tag" style="background-color:#D94371;">{{ air["aqi"] }} {{ air["category"] }}</span>
+        {% endif %}
+      </div>
+      <div class="air-box">
+          <div class="air-data">
+              <p>{{ air["pm2p5"] }}</p>
+              <meter value="{{ air["pm2p5"] }}" min="0" max="200"></meter>
+              <p class="des">PM2.5</p>
+          </div>
+          <div class="air-data">
+              <p>{{ air["pm10"] }}</p>
+              <meter value="{{ air["pm10"] }}" min="0" max="200"></meter>
+              <p class="des">PM10</p>
+          </div>
+          <div class="air-data">
+              <p>{{ air["o3"] }}</p>
+              <meter value="{{ air["o3"] }}" min="0" max="200"></meter>
+              <p class="des">O<sub>3</sub></p>
+          </div>
+          <div class="air-data">
+              <p>{{ air["co"] }}</p>
+              <meter value="{{ air["co"] }}" min="0" max="200"></meter>
+              <p class="des">CO</p>
+          </div>
+          <div class="air-data">
+              <p>{{ air["no2"] }}</p>
+              <meter value="{{ air["no2"] }}" min="0" max="200"></meter>
+              <p class="des">NO<sub>2</sub></p>
+          </div>
+          <div class="air-data">
+              <p>{{ air["so2"] }}</p>
+              <meter value="{{ air["so2"] }}" min="0" max="200"></meter>
+              <p class="des">SO<sub>2</sub></p>
+          </div>
+      </div>
+
+  </div>
 
     <div class="days-weather">
       {% for day in days %}
@@ -85,20 +150,6 @@
       </div>
       {% endfor %}
     </div>
-    {% for w in warning["warning"] %}
-    <div class="warning-box">
-      <div class="warning-side">
-        <div class="warning-icon"><em class="qi-{{ w['type'] }}"></em></div>
-        <div class="warning-header">
-          <p class="warning-title">{{ w['title'] }}</p>
-          <p class="warning-time">{{ w['startTime'] }}</p>
-        </div>
-      </div>
-      <div class="warning-info">
-        <p>{{ w['text'] }}</p>
-      </div>
-    </div>
-    {% endfor %}
   </div>
   </div>
 </body>

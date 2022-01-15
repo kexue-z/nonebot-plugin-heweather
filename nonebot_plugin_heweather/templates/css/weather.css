@@ -1,6 +1,6 @@
 body {
   background-image: linear-gradient(to bottom, #bdc3c7, #2c3e50);
-    color: white;
+  color: white;
   padding: 10px;
 }
 
@@ -87,7 +87,7 @@ p.realtime-text {
   padding: 20px 50px;
   border-radius: 20px;
   margin-top: 20px;
-  background-image: linear-gradient(225deg,#0F2027 ,#2C5364);
+  background-image: linear-gradient(225deg, #0f2027, #2c5364);
 }
 
 .tem-line {
@@ -111,7 +111,6 @@ p.realtime-text {
   padding-bottom: 20px;
 }
 
-
 .tem-line-box {
   width: 250px;
 }
@@ -121,9 +120,8 @@ p.realtime-text {
 }
 
 .days-text {
-  font-size: 30px
+  font-size: 30px;
 }
-
 
 .warning-box {
   padding: 20px;
@@ -133,7 +131,7 @@ p.realtime-text {
 }
 .warning-side {
   display: flex;
-  align-items: center
+  align-items: center;
 }
 
 .warning-header {
@@ -142,16 +140,54 @@ p.realtime-text {
 
 .warning-time {
   font-size: 20px;
-  color: rgba(255, 255, 255, 0.55)
+  color: rgba(255, 255, 255, 0.55);
 }
 .warning-info {
   padding: 20px;
 }
 .tem-text {
-    width: 80px;
-    text-align: right;
+  width: 80px;
+  text-align: right;
 }
 
 .week-date {
-    width: 90px;
+  width: 90px;
+}
+
+.air {
+  padding: 20px;
+  border-radius: 20px;
+  background-image: linear-gradient(225deg, #7474bf, #348ac7);
+  margin-top: 20px;
+}
+
+.air-box-top {
+  text-align: center;
+}
+
+.air-tag {
+  display: inline-block;
+  width: 152px;
+  padding: 4px 0;
+  font-size: 30px;
+  line-height: 32px;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 32px;
+  color: white;
+}
+
+.air-box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.air-data {
+  text-align: center;
+  padding: 20px 20px;
+  width: 120px;
+}
+
+meter {
+  width: 100px;
 }

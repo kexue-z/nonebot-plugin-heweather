@@ -4,6 +4,7 @@ from nonebot.plugin import require
 
 template_to_pic = require("nonebot_plugin_htmlrender").template_to_pic
 
+
 async def render(data) -> bytes:
     template_path = str(Path(__file__).parent / "templates")
     data = add_week(data)
@@ -15,12 +16,14 @@ async def render(data) -> bytes:
             "days": convert_days(data),
             "city": convert_city(data),
             "warning": convert_warning(data),
+            "air": convert_air(data),
         },
         pages={
             "viewport": {"width": 1000, "height": 300},
             "base_url": f"file://{template_path}",
         },
     )
+
 
 def convert_days(data):
     days = []
@@ -63,3 +66,7 @@ def convert_warning(data):
 
 def convert_city(data):
     return data["city"]
+
+
+def convert_air(data):
+    return data["air"]["now"]
