@@ -69,4 +69,18 @@ def convert_city(data):
 
 
 def convert_air(data):
-    return data["air"]["now"]
+    def tag_color(category):
+        color = {
+            "优": "#95B359",
+            "良": "#A9A538",
+            "轻度污染": "#E0991D",
+            "中度污染": "#D96161",
+            "重度污染": "#A257D0",
+            "严重污染": "#D94371",
+        }
+        return color[category]
+
+    air = data["air"]["now"]
+    air["tag_color"] = tag_color(air["category"])
+    print(air)
+    return air

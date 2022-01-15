@@ -167,8 +167,10 @@ p.realtime-text {
 
 .air-tag {
   display: inline-block;
-  width: 152px;
-  padding: 4px 0;
+  width: intrinsic; /* Safari/WebKit 使用了非标准的名称 */
+  width: -moz-max-content; /* Firefox/Gecko */
+  width: -webkit-max-content; /* Chrome */
+  padding: 4px 32px;
   font-size: 30px;
   line-height: 32px;
   text-align: center;
