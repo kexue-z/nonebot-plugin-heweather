@@ -27,11 +27,14 @@
 QWEATHER_APIKEY = xxx
 ```
 
-## 是否使用商业版 可选 环境配置
+## api类型 可选配置 环境配置
 
-- 不添加则默认开发版
+0 = 普通版(3天天气预报)
+1 = 个人开发版(7天天气预报)
+2 = 商业版 (7天天气预报)
+
 
 ```
-QWEATHER_COMMERCIAL = true
+QWEATHER_APITYPE = 
 ```
 
