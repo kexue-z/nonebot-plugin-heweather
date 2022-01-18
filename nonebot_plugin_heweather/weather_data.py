@@ -3,8 +3,6 @@ from nonebot.log import logger
 from typing import Union
 import asyncio
 
-__reference = "\n请参考: https://dev.qweather.com/docs/start/status-code/"
-
 
 class APIError(Exception):
     ...
@@ -50,6 +48,7 @@ class Weather:
         self.daily = None
         self.air = None
         self.warning = None
+        self.__reference = "\n请参考: https://dev.qweather.com/docs/start/status-code/"
 
     async def load_data(self):
         self.city_id = await self._get_city_id()
@@ -72,7 +71,7 @@ class Weather:
         res = res.json()
         logger.debug(res)
         if res["code"] != "200":
-            raise APIError("错误! 请检查配置! 错误代码: {}".format(res["code"]) + __reference)
+            raise APIError("错误! 错误代码: {}".format(res["code"]) + self.__reference)
         else:
             return res["location"][0]["id"]
 
@@ -137,14 +136,3 @@ class Weather:
         )
         self._check_response(res)
         return res.json()
-
-
-async def test():
-    weather = Weather("北京", "58d959a6b9fb44b1be6c504f3b93b4c3", 1)
-    await weather.load_data()
-    return weather
-
-
-if __name__ == "__main__":
-    w = asyncio.run(test())
-    print(w.now)
