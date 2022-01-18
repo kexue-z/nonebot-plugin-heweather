@@ -91,7 +91,7 @@ class Weather:
                 "warning: {}".format(
                     self.warning["code"] if not self.warning else "None"
                 )
-                + __reference
+                + self.__reference
             )
 
     def _check_response(self, response: Response) -> bool:
