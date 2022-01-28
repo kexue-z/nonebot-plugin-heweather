@@ -11,7 +11,6 @@
 # 安装
 
 直接使用 `pip install nonebot-plugin-heweather` 进行安装
-如果是`beta1` 需要 `pip install nonebot-plugin-heweather==0.4.1.1-beta.1`
 
 在 `bot.py` 中 写入 `nonebot.load_plugin("nonebot_plugin_heweather")`
 
