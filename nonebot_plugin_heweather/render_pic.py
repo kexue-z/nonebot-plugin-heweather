@@ -1,8 +1,8 @@
 from pathlib import Path
-from .weather_data import Weather
-from nonebot.plugin import require
 
-template_to_pic = require("nonebot_plugin_htmlrender").template_to_pic
+from nonebot_plugin_htmlrender import template_to_pic
+
+from .weather_data import Weather
 
 
 async def render(weather: Weather) -> bytes:
