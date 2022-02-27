@@ -4,11 +4,27 @@ from nonebot import get_driver, on_regex
 from nonebot.adapters.onebot.v11 import Bot, MessageEvent, MessageSegment
 from nonebot.log import logger
 
-from .weather_data import Weather
+from .config import Config
 from .render_pic import render
+from .weather_data import Weather
 
-api_key = get_driver().config.qweather_apikey
-api_type = get_driver().config.qweather_apitype
+plugin_config = Config.parse_obj(get_driver().config)
+
+if hasattr(plugin_config, "qweather_apikey") and hasattr(
+    plugin_config, "qweather_apitype"
+):
+    api_key = plugin_config.qweather_apikey
+    api_type = plugin_config.qweather_apitype
+else:
+    from .weather_data import ConfigError
+
+    raise ConfigError("请设置 qweather_apikey 和 qweather_apitype")
+
+if hasattr(plugin_config, "debug"):
+    if plugin_config.DEBUG:
+        DEBUG = True
+else:
+    DEBUG = False
 
 weather = on_regex(r".*?(.*)天气.*?", priority=1)
 
@@ -34,7 +50,7 @@ async def _(bot: Bot, event: MessageEvent):
 
     img = await render(w_data)
 
-    if get_driver().config.debug:
+    if DEBUG:
         debug_save_img(img)
 
     await weather.finish(MessageSegment.image(img))
@@ -42,6 +58,7 @@ async def _(bot: Bot, event: MessageEvent):
 
 def debug_save_img(img: bytes) -> None:
     from io import BytesIO
+
     from PIL import Image
 
     logger.debug("将会保存图片到 weather.png")

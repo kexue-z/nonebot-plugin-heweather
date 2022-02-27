@@ -428,6 +428,11 @@ Pygments = ">=2.10.0,<3.0.0"
 pymdown-extensions = ">=9.1,<10.0"
 python-markdown-math = ">=0.8,<0.9"
 
+[package.source]
+type = "legacy"
+url = "https://mirrors.aliyun.com/pypi/simple"
+reference = "aliyun"
+
 [[package]]
 name = "nonebot2"
 version = "2.0.0b1"
@@ -872,7 +877,7 @@ reference = "aliyun"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7.3,<4.0.0"
-content-hash = "a523e73cf37005bdaa5c5f59422d2928b577703f49520e0a26afcff4c6a19b4a"
+content-hash = "d689fa3ffa67749e27d6cd66e1e2af60509927436a70aa6f6f17d7bb7ff18df4"
 
 [metadata.files]
 aiofiles = [
