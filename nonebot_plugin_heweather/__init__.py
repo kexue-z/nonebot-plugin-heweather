@@ -8,21 +8,20 @@ from .config import Config
 from .render_pic import render
 from .weather_data import Weather
 
-plugin_config = Config.parse_obj(get_driver().config)
+plugin_config = Config.parse_obj(get_driver().config.dict())
 
-if hasattr(plugin_config, "qweather_apikey") and hasattr(
-    plugin_config, "qweather_apitype"
-):
+if plugin_config.qweather_apikey and plugin_config.qweather_apitype:
     api_key = plugin_config.qweather_apikey
-    api_type = plugin_config.qweather_apitype
+    api_type = int(plugin_config.qweather_apitype)
 else:
     from .weather_data import ConfigError
 
     raise ConfigError("请设置 qweather_apikey 和 qweather_apitype")
 
-if hasattr(plugin_config, "debug"):
-    if plugin_config.DEBUG:
-        DEBUG = True
+
+if plugin_config.debug:
+    DEBUG = True
+    logger.debug("将会保存图片到 weather.png")
 else:
     DEBUG = False
 
@@ -61,6 +60,6 @@ def debug_save_img(img: bytes) -> None:
 
     from PIL import Image
 
-    logger.debug("将会保存图片到 weather.png")
+    logger.debug("保存图片到 weather.png")
     a = Image.open(BytesIO(img))
     a.save("weather.png", format="PNG")
