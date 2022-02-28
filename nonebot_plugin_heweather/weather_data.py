@@ -79,7 +79,7 @@ class Weather:
         if (
             self.now["code"] == "200"
             and self.daily["code"] == "200"
-            and self.air["code"] == "200"
+            and self.air["code"] in ["200","403"]
         ):
             ...
         else:
@@ -125,8 +125,11 @@ class Weather:
             url=self.url_air,
             params={"location": self.city_id, "key": self.apikey},
         )
-        self._check_response(res)
-        return res.json()
+        try:
+            self._check_response(res)
+            return res.json()
+        except:
+            return None
 
     @property
     async def _warning(self) -> Union[dict, None]:

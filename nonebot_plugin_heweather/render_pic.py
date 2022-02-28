@@ -16,7 +16,7 @@ async def render(weather: Weather) -> bytes:
             "days": add_date(weather.daily["daily"]),
             "city": weather.city_name,
             "warning": weather.warning,
-            "air": add_tag_color(weather.air["now"]),
+            "air": add_tag_color(weather.air["now"]) if "now" in weather.air else None,
         },
         pages={
             "viewport": {"width": 1000, "height": 300},
