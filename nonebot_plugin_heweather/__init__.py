@@ -41,7 +41,7 @@ def get_msg(msg) -> str:
 @weather.handle()
 async def _(bot: Bot, event: MessageEvent):
     city = get_msg(event.get_plaintext())
-    if city is None:
+    if not city:
         await weather.finish("地点是...空气吗?? >_<")
 
     w_data = Weather(city_name=city, api_key=api_key, api_type=api_type)
