@@ -1,7 +1,7 @@
 import re
 
 from nonebot import get_driver, on_regex
-from nonebot.adapters.onebot.v11 import Bot, MessageEvent, MessageSegment, Message
+from nonebot.adapters.onebot.v11 import Bot, MessageEvent, MessageSegment
 from nonebot.log import logger
 
 from .config import Config
