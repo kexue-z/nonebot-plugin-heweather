@@ -6,7 +6,7 @@ from nonebot.log import logger
 
 from .config import Config
 from .render_pic import render
-from .weather_data import Weather
+from .weather_data import Weather, CityNotFoundError, ConfigError
 
 plugin_config = Config.parse_obj(get_driver().config.dict())
 
@@ -14,8 +14,6 @@ if plugin_config.qweather_apikey and plugin_config.qweather_apitype:
     api_key = plugin_config.qweather_apikey
     api_type = int(plugin_config.qweather_apitype)
 else:
-    from .weather_data import ConfigError
-
     raise ConfigError("请设置 qweather_apikey 和 qweather_apitype")
 
 
@@ -45,7 +43,10 @@ async def _(bot: Bot, event: MessageEvent):
         await weather.finish("地点是...空气吗?? >_<")
 
     w_data = Weather(city_name=city, api_key=api_key, api_type=api_type)
-    await w_data.load_data()
+    try:
+        await w_data.load_data()
+    except CityNotFoundError:
+        await weather.finish()
 
     img = await render(w_data)
 

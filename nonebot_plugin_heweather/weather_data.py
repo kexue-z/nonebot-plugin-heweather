@@ -12,6 +12,10 @@ class ConfigError(Exception):
     ...
 
 
+class CityNotFoundError(Exception):
+    ...
+
+
 class Weather:
     def __url__(self):
         if self.api_type == 2:
@@ -70,7 +74,9 @@ class Weather:
 
         res = res.json()
         logger.debug(res)
-        if res["code"] != "200":
+        if res["code"] == "404":
+            raise CityNotFoundError()
+        elif res["code"] != "200":
             raise APIError("错误! 错误代码: {}".format(res["code"]) + self.__reference)
         else:
             return res["location"][0]["id"]
@@ -79,7 +85,7 @@ class Weather:
         if (
             self.now["code"] == "200"
             and self.daily["code"] == "200"
-            and self.air["code"] in ["200","403"]
+            and self.air["code"] in ["200", "403"]
         ):
             ...
         else:
@@ -125,11 +131,8 @@ class Weather:
             url=self.url_air,
             params={"location": self.city_id, "key": self.apikey},
         )
-        try:
-            self._check_response(res)
-            return res.json()
-        except:
-            return None
+        self._check_response(res)
+        return res.json()
 
     @property
     async def _warning(self) -> Union[dict, None]:
