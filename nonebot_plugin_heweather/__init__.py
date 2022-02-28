@@ -44,20 +44,15 @@ async def _(bot: Bot, event: MessageEvent):
     if not city:
         await weather.finish("地点是...空气吗?? >_<")
 
-    from .weather_data import APIError
-    try:
-        w_data = Weather(city_name=city, api_key=api_key, api_type=api_type)
-        await w_data.load_data()
+    w_data = Weather(city_name=city, api_key=api_key, api_type=api_type)
+    await w_data.load_data()
 
-        img = await render(w_data)
+    img = await render(w_data)
 
-        if DEBUG:
-            debug_save_img(img)
+    if DEBUG:
+        debug_save_img(img)
 
-        await weather.finish(MessageSegment.image(img))
-    except APIError:
-        await weather.finish(Message("天气查询出错，请输入正确的城市或请稍后再试"))
-
+    await weather.finish(MessageSegment.image(img))
 
 
 def debug_save_img(img: bytes) -> None:
