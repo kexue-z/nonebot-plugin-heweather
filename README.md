@@ -5,7 +5,7 @@
 # 使用html+playwright来渲染好看的！
 
 - 使用了~~自产自销的~~[nonebot-plugin-htmlrender](https://github.com/kexue-z/nonebot-plugin-htmlrender)
-- 需要先保证playwright可以正常运行并在系统（或容器中）存在中文字体
+- **需要先保证playwright可以正常运行并在系统（或容器中）存在中文字体**
 
 
 # 安装
