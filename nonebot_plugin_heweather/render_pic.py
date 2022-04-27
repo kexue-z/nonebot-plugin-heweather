@@ -1,8 +1,9 @@
+from typing import List
 from pathlib import Path
 
 from nonebot_plugin_htmlrender import template_to_pic
 
-from .model import Air, DailyApi
+from .model import Air, Daily
 from .weather_data import Weather
 
 
@@ -14,7 +15,7 @@ async def render(weather: Weather) -> bytes:
         template_name="weather.html",
         templates={
             "now": weather.now.now,
-            "days": add_date(weather.daily),
+            "days": add_date(weather.daily.daily),
             "city": weather.city_name,
             "warning": weather.warning,
             "air": add_tag_color(weather.air.now) if weather.air else None,
@@ -26,7 +27,7 @@ async def render(weather: Weather) -> bytes:
     )
 
 
-def add_date(daily: DailyApi):
+def add_date(daily: List[Daily]):
     from datetime import datetime
 
     week_map = [
@@ -39,7 +40,7 @@ def add_date(daily: DailyApi):
         "周六",
     ]
 
-    for day in daily.daily:
+    for day in daily:
         date = day.fxDate.split("-")
         _year = int(date[0])
         _month = int(date[1])

@@ -111,7 +111,7 @@ class Weather:
             params={"location": self.city_id, "key": self.apikey},
         )
         self._check_response(res)
-        return res.json()
+        return NowApi(**res.json())
 
     @property
     async def _daily(self) -> DailyApi:
@@ -120,7 +120,7 @@ class Weather:
             params={"location": self.city_id, "key": self.apikey},
         )
         self._check_response(res)
-        return res.json()
+        return DailyApi(**res.json())
 
     @property
     async def _air(self) -> Optional[AirApi]:
@@ -129,7 +129,7 @@ class Weather:
             params={"location": self.city_id, "key": self.apikey},
         )
         self._check_response(res)
-        return res.json()
+        return AirApi(**res.json())
 
     @property
     async def _warning(self) -> Optional[WarningApi]:
@@ -138,4 +138,4 @@ class Weather:
             params={"location": self.city_id, "key": self.apikey},
         )
         self._check_response(res)
-        return res.json()
+        return WarningApi(**res.json())
