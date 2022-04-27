@@ -2,6 +2,7 @@ from pathlib import Path
 
 from nonebot_plugin_htmlrender import template_to_pic
 
+from .model import Air, DailyApi
 from .weather_data import Weather
 
 
@@ -12,11 +13,11 @@ async def render(weather: Weather) -> bytes:
         template_path=template_path,
         template_name="weather.html",
         templates={
-            "now": weather.now["now"],
-            "days": add_date(weather.daily["daily"]),
+            "now": weather.now.now,
+            "days": add_date(weather.daily),
             "city": weather.city_name,
             "warning": weather.warning,
-            "air": add_tag_color(weather.air["now"]) if "now" in weather.air else None,
+            "air": add_tag_color(weather.air.now) if weather.air else None,
         },
         pages={
             "viewport": {"width": 1000, "height": 300},
@@ -25,7 +26,7 @@ async def render(weather: Weather) -> bytes:
     )
 
 
-def add_date(daily):
+def add_date(daily: DailyApi):
     from datetime import datetime
 
     week_map = [
@@ -38,19 +39,19 @@ def add_date(daily):
         "周六",
     ]
 
-    for day in range(len(daily)):
-        date = daily[day]["fxDate"].split("-")
+    for day in daily.daily:
+        date = day.fxDate.split("-")
         _year = int(date[0])
         _month = int(date[1])
         _day = int(date[2])
         week = int(datetime(_year, _month, _day, 0, 0).strftime("%w"))
-        daily[day]["week"] = week_map[week] if day != 0 else "今日"
-        daily[day]["date"] = f"{_month}月{_day}日"
+        day.week = week_map[week] if day != 0 else "今日"
+        day.date = f"{_month}月{_day}日"
 
     return daily
 
 
-def add_tag_color(air):
+def add_tag_color(air: Air):
     color = {
         "优": "#95B359",
         "良": "#A9A538",
@@ -59,5 +60,5 @@ def add_tag_color(air):
         "重度污染": "#A257D0",
         "严重污染": "#D94371",
     }
-    air["tag_color"] = color[air["category"]]
+    air.tag_color = color[air.category]
     return air

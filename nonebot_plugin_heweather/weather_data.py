@@ -1,7 +1,10 @@
-from httpx import AsyncClient, Response
-from nonebot.log import logger
-from typing import Union
 import asyncio
+from typing import Dict, Union, Optional
+
+from httpx import Response, AsyncClient
+from nonebot.log import logger
+
+from .model import AirApi, NowApi, DailyApi, WarningApi
 
 
 class APIError(Exception):
@@ -48,10 +51,10 @@ class Weather:
         self.api_type = api_type
         self.__url__()
 
-        self.now = None
-        self.daily = None
-        self.air = None
-        self.warning = None
+        # self.now: Optional[Dict[str, str]] = None
+        # self.daily = None
+        # self.air = None
+        # self.warning = None
         self.__reference = "\n请参考: https://dev.qweather.com/docs/start/status-code/"
 
     async def load_data(self):
@@ -82,21 +85,15 @@ class Weather:
             return res["location"][0]["id"]
 
     def _data_validate(self):
-        if (
-            self.now["code"] == "200"
-            and self.daily["code"] == "200"
-            and self.air["code"] in ["200", "403"]
-        ):
-            ...
+        if self.now.code == "200" and self.daily.code == "200":
+            pass
         else:
             raise APIError(
                 "错误! 请检查配置! "
-                f'错误代码: now: {self.now["code"]}  '
-                f'daily: {self.daily["code"]}  '
-                f'air: {self.air["code"]}  '
-                "warning: {}".format(
-                    self.warning["code"] if not self.warning else "None"
-                )
+                f"错误代码: now: {self.now.code}  "
+                f"daily: {self.daily.code}  "
+                + "air: {}  ".format(self.air.code if self.air else "None")
+                + "warning: {}".format(self.warning.code if self.warning else "None")
                 + self.__reference
             )
 
@@ -108,7 +105,7 @@ class Weather:
             raise APIError(f"Response code:{response.status_code}")
 
     @property
-    async def _now(self) -> dict:
+    async def _now(self) -> NowApi:
         res = await self._get_data(
             url=self.url_weather_api + "now",
             params={"location": self.city_id, "key": self.apikey},
@@ -117,7 +114,7 @@ class Weather:
         return res.json()
 
     @property
-    async def _daily(self) -> dict:
+    async def _daily(self) -> DailyApi:
         res = await self._get_data(
             url=self.url_weather_api + str(self.forecast_days) + "d",
             params={"location": self.city_id, "key": self.apikey},
@@ -126,7 +123,7 @@ class Weather:
         return res.json()
 
     @property
-    async def _air(self) -> dict:
+    async def _air(self) -> Optional[AirApi]:
         res = await self._get_data(
             url=self.url_air,
             params={"location": self.city_id, "key": self.apikey},
@@ -135,7 +132,7 @@ class Weather:
         return res.json()
 
     @property
-    async def _warning(self) -> Union[dict, None]:
+    async def _warning(self) -> Optional[WarningApi]:
         res = await self._get_data(
             url=self.url_weather_warning,
             params={"location": self.city_id, "key": self.apikey},

@@ -1,12 +1,12 @@
 import re
 
-from nonebot import get_driver, on_regex
-from nonebot.adapters.onebot.v11 import Bot, MessageEvent, MessageSegment
+from nonebot import on_regex, get_driver
 from nonebot.log import logger
+from nonebot.adapters.onebot.v11 import Bot, MessageEvent, MessageSegment
 
 from .config import Config
 from .render_pic import render
-from .weather_data import Weather, CityNotFoundError, ConfigError
+from .weather_data import Weather, ConfigError, CityNotFoundError
 
 plugin_config = Config.parse_obj(get_driver().config.dict())
 
@@ -29,8 +29,8 @@ weather = on_regex(r".*?(.*)天气.*?", priority=1)
 def get_msg(msg) -> str:
     msg1 = re.search(r".*?(.*)天气.*?", msg)
     msg2 = re.search(r".*?天气(.*).*?", msg)
-    msg1 = msg1.group(1).replace(" ", "")
-    msg2 = msg2.group(1).replace(" ", "")
+    msg1 = msg1.group(1).replace(" ", "") if msg1 else None
+    msg2 = msg2.group(1).replace(" ", "") if msg2 else None
     msg = msg1 if msg1 else msg2
 
     return msg

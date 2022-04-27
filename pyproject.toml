@@ -17,6 +17,7 @@ pydantic = "^1.5.0"
 [tool.poetry.dev-dependencies]
 black = {version = "^21.12b0", allow-prereleases = true}
 pillow = {version = "^8.4.0", source = "aliyun"}
+isort = "^5.10.1"
 
 [[tool.poetry.source]]
 name = "aliyun"
