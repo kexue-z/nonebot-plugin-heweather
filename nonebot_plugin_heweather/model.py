@@ -57,7 +57,7 @@ class AirApi(BaseModel, extra=Extra.allow):
 class Warning(BaseModel, extra=Extra.allow):
     title: str
     type: str
-    startTime: str
+    pubTime: str
     text: str
 
 
