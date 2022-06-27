@@ -82,6 +82,7 @@ class Weather:
         elif res["code"] != "200":
             raise APIError("错误! 错误代码: {}".format(res["code"]) + self.__reference)
         else:
+            self.city_name = res["location"][0]["name"]
             return res["location"][0]["id"]
 
     def _data_validate(self):
@@ -123,7 +124,7 @@ class Weather:
         return DailyApi(**res.json())
 
     @property
-    async def _air(self) -> Optional[AirApi]:
+    async def _air(self) -> AirApi:
         res = await self._get_data(
             url=self.url_air,
             params={"location": self.city_id, "key": self.apikey},
@@ -132,7 +133,7 @@ class Weather:
         return AirApi(**res.json())
 
     @property
-    async def _warning(self) -> Optional[WarningApi]:
+    async def _warning(self) -> WarningApi:
         res = await self._get_data(
             url=self.url_weather_warning,
             params={"location": self.city_id, "key": self.apikey},

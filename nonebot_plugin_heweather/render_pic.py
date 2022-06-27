@@ -10,6 +10,11 @@ from .weather_data import Weather
 async def render(weather: Weather) -> bytes:
     template_path = str(Path(__file__).parent / "templates")
 
+    air = None
+    if weather.air:
+        if weather.air.now:
+            air = add_tag_color(weather.air.now)
+
     return await template_to_pic(
         template_path=template_path,
         template_name="weather.html",
@@ -18,7 +23,7 @@ async def render(weather: Weather) -> bytes:
             "days": add_date(weather.daily.daily),
             "city": weather.city_name,
             "warning": weather.warning,
-            "air": add_tag_color(weather.air.now) if weather.air else None,
+            "air": air,
         },
         pages={
             "viewport": {"width": 1000, "height": 300},
