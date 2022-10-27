@@ -4,7 +4,9 @@
   "python.formatting.provider": "black",
   "python.languageServer": "Pylance",
   "python.linting.flake8Enabled": true,
-  "python.sortImports.args": ["--ls"],
+  "python.sortImports.args": [
+    "--ls"
+  ],
   "editor.formatOnSave": true,
   "python.analysis.extraPaths": [
     "/**"
@@ -33,5 +35,6 @@
     ".mypy_cache": true,
     "poetry.lock": true,
     "LICENSE": true
-  }
+  },
+  "python.linting.enabled": true
 }

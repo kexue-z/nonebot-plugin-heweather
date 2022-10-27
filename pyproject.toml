@@ -1,17 +1,17 @@
 [tool.poetry]
 name = "nonebot-plugin-heweather"
-version = "0.6.0"
+version = "0.6.1"
 description = "Get Heweather information and convert to pictures"
 authors = ["kexue <x@kexue.io>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.7.3,<4.0.0"
+python = ">=3.8,<4.0.0"
 httpx = ">=0.18.0,<1.0.0"
 nonebot-plugin-htmlrender = ">=0.0.4.3"
 nonebot-adapter-onebot = "^2.0.0-beta.1"
-nonebot2 = "^2.0.0-beta.1"
+nonebot2 = "^2.0.0-beta.4"
 pydantic = "^1.5.0"
 
 [tool.poetry.dev-dependencies]
