@@ -37,3 +37,16 @@ QWEATHER_APIKEY = xxx
 QWEATHER_APITYPE = 
 ```
 
+## APIKEY获取方式
+
+1、注册和风天气账号  
+进入官网注册[https://id.qweather.com/#/login](https://id.qweather.com/#/login)  
+2、进入控制台  
+登录后，点击“和风天气开发者控制台”  
+3、创建项目  
+点击控制台左侧“项目管理”，然后点击“创建项目”，根据提示自行填写  
+“选择订阅”->“免费订阅”，“设置KEY”->“Web API”，都填好后“创建”  
+4、获取key并配置.env  
+返回“项目管理”，可以看到创建的项目，点击KEY下面的“查看”，复制KEY到你的.env即可。  
+ 
+
