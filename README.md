@@ -26,7 +26,7 @@
 QWEATHER_APIKEY = xxx
 ```
 
-## api类型 可选配置 环境配置
+## api类型 必须配置 环境配置
 
 0 = 普通版(3天天气预报)
 1 = 个人开发版(7天天气预报)
@@ -34,7 +34,7 @@ QWEATHER_APIKEY = xxx
 
 
 ```
-QWEATHER_APITYPE = 
+QWEATHER_APITYPE = 0
 ```
 
 ## APIKEY获取方式
