@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-heweather"
-version = "0.6.3"
+version = "0.6.4"
 description = "Get Heweather information and convert to pictures"
 authors = ["kexue <x@kexue.io>"]
 license = "MIT"
@@ -12,7 +12,7 @@ httpx = ">=0.18.0,<1.0.0"
 nonebot-plugin-htmlrender = ">=0.0.4.3"
 nonebot-adapter-onebot = ">=2.0.0-beta.1"
 pydantic = ">=1.5.0"
-nonebot2 = {version = ">=2.0.0rc1", extras = ["fastapi"]}
+nonebot2 = { version = ">=2.0.0rc1", extras = ["fastapi"] }
 
 [tool.poetry.group.dev.dependencies]
 black = { version = "^21.12b0", allow-prereleases = true }
