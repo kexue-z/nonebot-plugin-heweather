@@ -1,8 +1,7 @@
 import asyncio
-from typing import Dict, Union, Optional
 
-from httpx import Response, AsyncClient
 from nonebot.log import logger
+from httpx import Response, AsyncClient
 
 from .model import AirApi, NowApi, DailyApi, WarningApi
 

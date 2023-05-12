@@ -14,10 +14,9 @@ async def app(
     config = nonebot.get_driver().config
 
     config.qweather_apikey = api_key
-    config.qweather_apitype =api_type
-
+    config.qweather_apitype = api_type
 
     # 加载插件
     nonebot.load_plugin("nonebot_plugin_heweather")
-    
+
     return App(monkeypatch)
