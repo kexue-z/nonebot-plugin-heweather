@@ -1,10 +1,9 @@
-from typing import Tuple
+from re import search
 
-from nonebot import on_regex, get_driver
 from nonebot.log import logger
-from nonebot.params import RegexGroup
 from nonebot.matcher import Matcher
-from nonebot.adapters.onebot.v11 import MessageSegment
+from nonebot import get_driver, on_keyword
+from nonebot.adapters.onebot.v11 import MessageEvent, MessageSegment
 
 from .config import Config
 from .render_pic import render
@@ -25,19 +24,22 @@ if plugin_config.debug:
 else:
     DEBUG = False
 
-weather = on_regex(r".*?(.*)天气(.*).*?", priority=1)
+
+weather = on_keyword({"天气"}, priority=1)
 
 
 @weather.handle()
-async def _(matcher: Matcher, args: Tuple[str, ...] = RegexGroup()):
-    city = args[0].strip() or args[1].strip()
-    if not city:
-        await weather.finish("地点是...空气吗?? >_<")
-    
-    # 判断指令前后是否都有内容，如果是则结束，否则跳过。
-    if ((args[0].strip() == '') == (args[1].strip() == '')):
-        await weather.finish()
-        
+async def _(matcher: Matcher, event: MessageEvent):
+    city = ""
+    if args := search(r".*?(.*)天气(.*).*?", event.get_plaintext()):  # type: ignore
+        city = args[0].strip() or args[1].strip()
+        if not city:
+            await weather.finish("地点是...空气吗?? >_<")
+
+        # 判断指令前后是否都有内容，如果是则结束，否则跳过。
+        if (args[0].strip() == "") == (args[1].strip() == ""):
+            await weather.finish()
+
     w_data = Weather(city_name=city, api_key=api_key, api_type=api_type)
     try:
         await w_data.load_data()
