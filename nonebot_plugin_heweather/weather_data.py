@@ -138,4 +138,4 @@ class Weather:
             params={"location": self.city_id, "key": self.apikey},
         )
         self._check_response(res)
-        return WarningApi(**res.json())
+        return None if res.json().get("code") == "204" else WarningApi(**res.json())
