@@ -2,12 +2,23 @@ from re import search
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
+from nonebot.plugin import PluginMetadata
 from nonebot import get_driver, on_keyword
 from nonebot.adapters.onebot.v11 import MessageEvent, MessageSegment
 
 from .config import Config
 from .render_pic import render
 from .weather_data import Weather, ConfigError, CityNotFoundError
+
+__plugin_meta__ = PluginMetadata(
+    name="nonebot-plugin-heweather",
+    description="和风天气图片显示插件",
+    usage="天气地名 / 地名天气",
+    type="application",
+    config=Config,
+    extra={},
+)
+
 
 plugin_config = Config.parse_obj(get_driver().config.dict())
 
