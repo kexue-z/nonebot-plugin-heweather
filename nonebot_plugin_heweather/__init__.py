@@ -13,8 +13,10 @@ __plugin_meta__ = PluginMetadata(
     description="和风天气图片显示插件",
     usage="天气地名 / 地名天气",
     type="application",
+    homepage="https://github.com/kexue-z/nonebot-plugin-heweather",
     config=Config,
     extra={},
+    supported_adapters={"~onebot.v11"},
 )
 
 

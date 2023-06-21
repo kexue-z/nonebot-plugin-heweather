@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-heweather"
-version = "0.6.7"
+version = "0.6.8"
 description = "Get Heweather information and convert to pictures"
 authors = [
     {name = "kexue", email = "xana278@foxmail.com"},
@@ -13,8 +13,12 @@ dependencies = [
     "nonebot2[fastapi]>=2.0.0",
 ]
 requires-python = ">=3.8,<4.0"
-license = {text = "MIT"}
+license = {file = "LICENSE"}
 readme = "README.md"
+
+[project.urls]
+"Homepage" = "https://github.com/kexue-z/nonebot-plugin-heweather"
+"Bug Tracker" = "https://github.com/kexue-z/nonebot-plugin-heweather/issues"
 
 [tool.pdm.build]
 includes = []
