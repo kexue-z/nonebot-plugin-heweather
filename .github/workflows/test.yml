@@ -1,0 +1,48 @@
+name: Test And Push Img
+
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "master"
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    env:
+      QWEATHER_API_KEY: ${{ secrets.QWEATHER_API_KEY }}
+      QWEATHER_API_TYPE: ${{ secrets.QWEATHER_API_TYPE }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+          architecture: "x64"
+      - uses: pdm-project/setup-pdm@v3
+        name: Setup PDM
+        with:
+          python-version: 3.10 # Version range or exact version of a Python version to use, the same as actions/setup-python
+          architecture: x64 # The target architecture (x86, x64) of the Python interpreter. the same as actions/setup-python
+          version: 1.4.0 # The version of PDM to install. Leave it as empty to use the latest version from PyPI, or 'head' to use the latest version from GitHub
+          prerelease: true # Allow prerelease versions to be installed
+          enable-pep582: true # Enable PEP 582 package loading globally
+      - name: Install dependencies
+        run: pdm install
+      - name: Run Tests
+        run: pdm run pytest
+        with:
+          env_vars: QWEATHER_API_KEY,QWEATHER_API_TYPE
+      - name: Commit files
+        run: |
+          git config --local user.email "bot@kexue.io"
+          git config --local user.name "Bot"
+          git commit -a -m "Update Img"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
