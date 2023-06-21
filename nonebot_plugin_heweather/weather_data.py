@@ -44,10 +44,10 @@ class Weather:
                 f"\n当前为: ({type(self.api_type)}){self.api_type}"
             )
 
-    def __init__(self, city_name: str, api_key: str, api_type: int = 0):
+    def __init__(self, city_name: str, api_key: str, api_type: int | str = 0):
         self.city_name = city_name
         self.apikey = api_key
-        self.api_type = api_type
+        self.api_type = int(api_type)
         self.__url__()
 
         # self.now: Optional[Dict[str, str]] = None

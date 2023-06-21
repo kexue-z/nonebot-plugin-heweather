@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       QWEATHER_API_KEY: ${{ secrets.QWEATHER_API_KEY }}
-      QWEATHER_API_TYPE: ${{ secrets.QWEATHER_API_TYPE }}
+      QWEATHER_API_TYPE: 1
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
