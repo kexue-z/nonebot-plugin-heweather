@@ -2,10 +2,6 @@ import pytest
 from nonebug import App
 from nonebot import get_driver
 
-config = get_driver().config
-api_key = config.qweather_apikey
-api_type = config.qweather_apitype
-
 
 @pytest.mark.asyncio
 async def test_heweather(app: App):
@@ -16,7 +12,10 @@ async def test_heweather(app: App):
     from nonebot_plugin_heweather.render_pic import render
     from nonebot_plugin_heweather.weather_data import Weather, CityNotFoundError
 
-    async with app.test_server():  # type: ignore
+    async with app.test_server():
+        config = get_driver().config
+        api_key = config.qweather_apikey
+        api_type = config.qweather_apitype
         w_data = Weather(city_name="beijing", api_key=api_key, api_type=api_type)
         try:
             await w_data.load_data()
