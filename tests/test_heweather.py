@@ -24,4 +24,4 @@ async def test_heweather(app: App):
 
         img = await render(w_data)
         a = Image.open(BytesIO(img))
-        a.save("weather.png", format="PNG")
+        a.save("docs/weather.png", format="PNG")
