@@ -1,14 +1,12 @@
-from re import search
-
+from nonebot import on_keyword
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.plugin import PluginMetadata
-from nonebot import get_driver, on_keyword
 from nonebot.adapters.onebot.v11 import MessageEvent, MessageSegment
 
-from .config import Config
 from .render_pic import render
 from .weather_data import Weather, ConfigError, CityNotFoundError
+from .config import DEBUG, QWEATHER_APIKEY, QWEATHER_APITYPE, Config
 
 __plugin_meta__ = PluginMetadata(
     name="nonebot-plugin-heweather",
@@ -20,20 +18,8 @@ __plugin_meta__ = PluginMetadata(
 )
 
 
-plugin_config = Config.parse_obj(get_driver().config.dict())
-
-if plugin_config.qweather_apikey and plugin_config.qweather_apitype:
-    api_key = plugin_config.qweather_apikey
-    api_type = int(plugin_config.qweather_apitype)
-else:
-    raise ConfigError("请设置 qweather_apikey 和 qweather_apitype")
-
-
-if plugin_config.debug:
-    DEBUG = True
+if DEBUG:
     logger.debug("将会保存图片到 weather.png")
-else:
-    DEBUG = False
 
 
 weather = on_keyword({"天气"}, priority=1)
@@ -41,6 +27,9 @@ weather = on_keyword({"天气"}, priority=1)
 
 @weather.handle()
 async def _(matcher: Matcher, event: MessageEvent):
+    if not (QWEATHER_APIKEY and QWEATHER_APITYPE):
+        raise ConfigError("请设置 qweather_apikey 和 qweather_apitype")
+
     city = ""
     if args := event.get_plaintext().split("天气"):
         city = args[0].strip() or args[1].strip()
@@ -50,7 +39,7 @@ async def _(matcher: Matcher, event: MessageEvent):
         # 判断指令前后是否都有内容，如果是则结束，否则跳过。
         if (args[0].strip() == "") == (args[1].strip() == ""):
             await weather.finish()
-    w_data = Weather(city_name=city, api_key=api_key, api_type=api_type)
+    w_data = Weather(city_name=city, api_key=QWEATHER_APIKEY, api_type=QWEATHER_APITYPE)
     try:
         await w_data.load_data()
     except CityNotFoundError:
