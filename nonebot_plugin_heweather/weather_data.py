@@ -1,9 +1,11 @@
 import asyncio
+from typing import Optional, Union
 
 from nonebot.log import logger
 from httpx import Response, AsyncClient
 
 from .model import AirApi, NowApi, DailyApi, WarningApi
+
 
 
 class APIError(Exception):
@@ -44,7 +46,7 @@ class Weather:
                 f"\n当前为: ({type(self.api_type)}){self.api_type}"
             )
 
-    def __init__(self, city_name: str, api_key: str, api_type: int | str = 0):
+    def __init__(self, city_name: str, api_key: str, api_type: Union[int, str] = 0):
         self.city_name = city_name
         self.apikey = api_key
         self.api_type = int(api_type)
@@ -56,6 +58,7 @@ class Weather:
         # self.warning = None
         self.__reference = "\n请参考: https://dev.qweather.com/docs/start/status-code/"
 
+    
     async def load_data(self):
         self.city_id = await self._get_city_id()
         self.now, self.daily, self.air, self.warning = await asyncio.gather(
@@ -132,7 +135,7 @@ class Weather:
         return AirApi(**res.json())
 
     @property
-    async def _warning(self) -> WarningApi | None:
+    async def _warning(self) -> Union[WarningApi, None]:
         res = await self._get_data(
             url=self.url_weather_warning,
             params={"location": self.city_id, "key": self.apikey},
