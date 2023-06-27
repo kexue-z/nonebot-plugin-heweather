@@ -1,4 +1,5 @@
 import asyncio
+from typing import Union, Optional
 
 from nonebot.log import logger
 from httpx import Response, AsyncClient
@@ -44,7 +45,7 @@ class Weather:
                 f"\n当前为: ({type(self.api_type)}){self.api_type}"
             )
 
-    def __init__(self, city_name: str, api_key: str, api_type: int | str = 0):
+    def __init__(self, city_name: str, api_key: str, api_type: Union[int, str] = 0):
         self.city_name = city_name
         self.apikey = api_key
         self.api_type = int(api_type)
@@ -132,7 +133,7 @@ class Weather:
         return AirApi(**res.json())
 
     @property
-    async def _warning(self) -> WarningApi | None:
+    async def _warning(self) -> Optional[WarningApi]:
         res = await self._get_data(
             url=self.url_weather_warning,
             params={"location": self.city_id, "key": self.apikey},
