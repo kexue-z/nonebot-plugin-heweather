@@ -13,8 +13,8 @@ def load_bot():
 
     config = nonebot.get_driver().config
 
-    config.qweather_apikey = getenv("QWEATHER_API_KEY")
-    config.qweather_apitype = getenv("QWEATHER_API_TYPE")
+    config.qweather_apikey = getenv("QWEATHER_APIKEY")
+    config.qweather_apitype = getenv("QWEATHER_APITYPE")
 
     # 加载插件
     nonebot.load_plugin("nonebot_plugin_heweather")

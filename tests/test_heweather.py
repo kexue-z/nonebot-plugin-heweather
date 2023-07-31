@@ -15,7 +15,7 @@ async def test_heweather(app: App):
     async with app.test_server():
         config = get_driver().config
         api_key = config.qweather_apikey
-        api_type = config.qweather_apitype
+        api_type = int(config.qweather_apitype)
         w_data = Weather(city_name="beijing", api_key=api_key, api_type=api_type)
         try:
             await w_data.load_data()
