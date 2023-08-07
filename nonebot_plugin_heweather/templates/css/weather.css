@@ -192,3 +192,36 @@ p.realtime-text {
 meter {
   width: 100px;
 }
+
+.hours-weather {
+  padding: 20px 20px;
+  border-radius: 20px;
+  margin-top: 20px;
+  background-image: linear-gradient(225deg, #102833, #2c6279);
+}
+
+.hour-box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tem-vert-line-box {
+  height: 100px;
+  position: relative;
+}
+
+.tem-vert-line {
+  width: 10px;
+  border-radius: 10px;
+  background:  #427bff;
+  margin: 0 auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+}
+
+.hour-data {
+  text-align: center;
+  width: 60px;
+}

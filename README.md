@@ -59,6 +59,15 @@ QWEATHER_APIKEY = xxx
 QWEATHER_APITYPE = 0
 ```
 
+## 逐小时类型 可选配置 环境变量
+
+1 = 未来12小时 (默认值)
+2 = 未来24小时
+
+```
+QWEATHER_HOURLYTYPE = 1
+```
+
 ## APIKEY 获取方式
 
 **1、注册和风天气账号**  

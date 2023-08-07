@@ -4,7 +4,7 @@ from typing import Union, Optional
 from nonebot.log import logger
 from httpx import Response, AsyncClient
 
-from .model import AirApi, NowApi, DailyApi, WarningApi
+from .model import AirApi, NowApi, DailyApi, WarningApi, HourlyApi
 
 
 class APIError(Exception):
@@ -26,6 +26,7 @@ class Weather:
             self.url_geoapi = "https://geoapi.qweather.com/v2/city/"
             self.url_weather_warning = "https://api.qweather.com/v7/warning/now"
             self.url_air = "https://api.qweather.com/v7/air/now"
+            self.url_hourly = "https://api.qweather.com/v7/weather/24h"
             self.forecast_days = 7
             logger.info("使用商业版API")
         elif self.api_type == 0 or self.api_type == 1:
@@ -33,6 +34,7 @@ class Weather:
             self.url_geoapi = "https://geoapi.qweather.com/v2/city/"
             self.url_weather_warning = "https://devapi.qweather.com/v7/warning/now"
             self.url_air = "https://devapi.qweather.com/v7/air/now"
+            self.url_hourly = "https://devapi.qweather.com/v7/weather/24h"
             if self.api_type == 0:
                 self.forecast_days = 3
                 logger.info("使用普通版API")
@@ -59,8 +61,14 @@ class Weather:
 
     async def load_data(self):
         self.city_id = await self._get_city_id()
-        self.now, self.daily, self.air, self.warning = await asyncio.gather(
-            self._now, self._daily, self._air, self._warning
+        (
+            self.now,
+            self.daily,
+            self.air,
+            self.warning,
+            self.hourly,
+        ) = await asyncio.gather(
+            self._now, self._daily, self._air, self._warning, self._hourly
         )
         self._data_validate()
 
@@ -140,3 +148,11 @@ class Weather:
         )
         self._check_response(res)
         return None if res.json().get("code") == "204" else WarningApi(**res.json())
+
+    @property
+    async def _hourly(self) -> HourlyApi:
+        res = await self._get_data(
+            url=self.url_hourly,
+            params={"location": self.city_id, "key": self.apikey},
+        )
+        return HourlyApi(**res.json())

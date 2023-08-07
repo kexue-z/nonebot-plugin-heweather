@@ -1,3 +1,4 @@
+from enum import IntEnum
 from typing import List, Optional
 
 from pydantic import Extra, BaseModel
@@ -64,3 +65,22 @@ class Warning(BaseModel, extra=Extra.allow):
 class WarningApi(BaseModel, extra=Extra.allow):
     code: str
     warning: Optional[List[Warning]]
+
+
+class Hourly(BaseModel, extra=Extra.allow):
+    fxTime: str
+    hour: Optional[str]
+    temp: str
+    icon: str
+    text: str
+    temp_percent: Optional[str]
+
+
+class HourlyApi(BaseModel, extra=Extra.allow):
+    code: str
+    hourly: List[Hourly]
+
+
+class HourlyType(IntEnum):
+    current_12h = 1
+    current_24h = 2
