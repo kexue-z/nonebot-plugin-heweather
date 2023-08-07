@@ -16,6 +16,7 @@ function color() {
         document.body.style.backgroundImage = "linear-gradient(rgb(25 23 58), rgb(25 29 45))";
         document.getElementById("today-weather").style.backgroundImage = "linear-gradient(225deg, #0d3447, #0e0e2c)";
         document.getElementById("air").style.backgroundImage = "linear-gradient(225deg, #191a5b, #090b1e)";
+        document.getElementById("hours-weather").style.backgroundImage = "linear-gradient(225deg, #0d294b, #1c1c27)";
         document.getElementById("days-weather").style.backgroundImage = "linear-gradient(225deg, #0f2a4b, #0f0f14)";
         air = document.getElementsByName("warning-box");
         for (var i = 0; i <air.length; i++) {
@@ -119,6 +120,21 @@ function color() {
       </div>
   </div>
   {% endif %}
+
+    <div class="hours-weather" id="hours-weather">
+      <div class="hour-box">
+        {% for hour in hours %}
+        <div class="hour-data">
+          <div class="hour-data">      
+            <p>{{ hour["temp"] }}°</p>
+            <div class="tem-vert-line-box"><div class="tem-vert-line" style="height: {{ hour['temp_percent'] }};"></div></div>
+            <p class="qi-{{ hour['icon'] }} icon-size"></p>
+            <p class="hour-des">{{ hour["hour"] }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
 
     <div class="days-weather" id="days-weather">
       {% for day in days %}

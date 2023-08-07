@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 from pathlib import Path
 
@@ -7,7 +8,8 @@ require("nonebot_plugin_htmlrender")
 
 from nonebot_plugin_htmlrender import template_to_pic
 
-from .model import Air, Daily
+from .config import QWEATHER_HOURLYTYPE
+from .model import Air, Daily, Hourly, HourlyType
 from .weather_data import Weather
 
 
@@ -28,6 +30,7 @@ async def render(weather: Weather) -> bytes:
             "city": weather.city_name,
             "warning": weather.warning,
             "air": air,
+            "hours": add_hour_data(weather.hourly.hourly),
         },
         pages={
             "viewport": {"width": 1000, "height": 300},
@@ -36,9 +39,22 @@ async def render(weather: Weather) -> bytes:
     )
 
 
-def add_date(daily: List[Daily]):
-    from datetime import datetime
+def add_hour_data(hourly: List[Hourly]):
+    min_temp = min([int(hour.temp) for hour in hourly])
+    high = max([int(hour.temp) for hour in hourly])
+    low = int(min_temp - (high - min_temp))
+    for hour in hourly:
+        date_time = datetime.fromisoformat(hour.fxTime)
+        hour.hour = date_time.strftime("%-I%p")
+        hour.temp_percent = f"{int((int(hour.temp) - low) / (high - low) * 100)}px"
+    if QWEATHER_HOURLYTYPE == HourlyType.current_12h:
+        hourly = hourly[:12]
+    if QWEATHER_HOURLYTYPE == HourlyType.current_24h:
+        hourly = hourly[::2]
+    return hourly
 
+
+def add_date(daily: List[Daily]):
     week_map = [
         "周日",
         "周一",
