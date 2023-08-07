@@ -1,10 +1,8 @@
 [project]
 name = "nonebot-plugin-heweather"
-version = "0.6.9"
+version = "0.6.10"
 description = "Get Heweather information and convert to pictures"
-authors = [
-    {name = "kexue", email = "xana278@foxmail.com"},
-]
+authors = [{ name = "kexue", email = "xana278@foxmail.com" }]
 dependencies = [
     "httpx<1.0.0,>=0.18.0",
     "nonebot-plugin-htmlrender>=0.0.4.3",
@@ -13,7 +11,7 @@ dependencies = [
     "nonebot2[fastapi]>=2.0.0",
 ]
 requires-python = ">=3.8,<4.0"
-license = {file = "LICENSE"}
+license = { file = "LICENSE" }
 readme = "README.md"
 
 [project.urls]
