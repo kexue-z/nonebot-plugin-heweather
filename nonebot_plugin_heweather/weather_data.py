@@ -21,26 +21,24 @@ class CityNotFoundError(Exception):
 
 class Weather:
     def __url__(self):
-        if self.api_type == 2:
+        self.url_geoapi = "https://geoapi.qweather.com/v2/city/"
+        if self.api_type == 2 or self.api_type == 1:
             self.url_weather_api = "https://api.qweather.com/v7/weather/"
-            self.url_geoapi = "https://geoapi.qweather.com/v2/city/"
             self.url_weather_warning = "https://api.qweather.com/v7/warning/now"
             self.url_air = "https://api.qweather.com/v7/air/now"
             self.url_hourly = "https://api.qweather.com/v7/weather/24h"
             self.forecast_days = 7
-            logger.info("使用商业版API")
-        elif self.api_type == 0 or self.api_type == 1:
+            if self.api_type == 1:
+                logger.info("使用个人开发版API")
+            else:
+                logger.info("使用商业版API")
+        elif self.api_type == 0:
             self.url_weather_api = "https://devapi.qweather.com/v7/weather/"
-            self.url_geoapi = "https://geoapi.qweather.com/v2/city/"
             self.url_weather_warning = "https://devapi.qweather.com/v7/warning/now"
             self.url_air = "https://devapi.qweather.com/v7/air/now"
             self.url_hourly = "https://devapi.qweather.com/v7/weather/24h"
-            if self.api_type == 0:
-                self.forecast_days = 3
-                logger.info("使用普通版API")
-            elif self.api_type == 1:
-                self.forecast_days = 7
-                logger.info("使用个人开发版API")
+            self.forecast_days = 3
+            logger.info("使用普通版API")
         else:
             raise ConfigError(
                 "api_type 必须是为 (int)0 -> 普通版, (int)1 -> 个人开发版, (int)2 -> 商业版"
@@ -80,7 +78,7 @@ class Weather:
     async def _get_city_id(self, api_type: str = "lookup"):
         res = await self._get_data(
             url=self.url_geoapi + api_type,
-            params={"location": self.city_name, "key": self.apikey},
+            params={"location": self.city_name, "key": self.apikey, "number": 1},
         )
 
         res = res.json()
@@ -155,4 +153,5 @@ class Weather:
             url=self.url_hourly,
             params={"location": self.city_id, "key": self.apikey},
         )
+        self._check_response(res)
         return HourlyApi(**res.json())
