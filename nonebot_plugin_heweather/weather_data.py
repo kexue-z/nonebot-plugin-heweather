@@ -4,7 +4,7 @@ from typing import Union, Optional
 from nonebot.log import logger
 from httpx import Response, AsyncClient
 
-from .model import AirApi, NowApi, DailyApi, WarningApi, HourlyApi
+from .model import AirApi, NowApi, DailyApi, HourlyApi, WarningApi
 
 
 class APIError(Exception):
@@ -28,20 +28,20 @@ class Weather:
             self.url_air = "https://api.qweather.com/v7/air/now"
             self.url_hourly = "https://api.qweather.com/v7/weather/24h"
             self.forecast_days = 7
-            if self.api_type == 1:
-                logger.info("使用个人开发版API")
-            else:
-                logger.info("使用商业版API")
+            # if self.api_type == 1:
+            logger.info("使用标准订阅API")
+            # else:
+            #     logger.info("使用商业版API")
         elif self.api_type == 0:
             self.url_weather_api = "https://devapi.qweather.com/v7/weather/"
             self.url_weather_warning = "https://devapi.qweather.com/v7/warning/now"
             self.url_air = "https://devapi.qweather.com/v7/air/now"
             self.url_hourly = "https://devapi.qweather.com/v7/weather/24h"
             self.forecast_days = 3
-            logger.info("使用普通版API")
+            logger.info("使用免费订阅API")
         else:
             raise ConfigError(
-                "api_type 必须是为 (int)0 -> 普通版, (int)1 -> 个人开发版, (int)2 -> 商业版"
+                "api_type 必须是为 (int)0 -> 免费订阅, (int)1 -> 标准订阅, (int)2 -> 商业版"
                 f"\n当前为: ({type(self.api_type)}){self.api_type}"
             )
 
