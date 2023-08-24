@@ -44,8 +44,8 @@ def add_hour_data(hourly: List[Hourly]):
     high = max([int(hour.temp) for hour in hourly])
     low = int(min_temp - (high - min_temp))
     for hour in hourly:
-        date_time = datetime.fromisoformat(hour.fxTime)
-        hour.hour = date_time.strftime("%-I%p")
+        date_time = datetime.fromisoformat(hour.fxTime)  # 2023-08-09 23:00:00+08:00
+        hour.hour = date_time.strftime("%H:%M")
         hour.temp_percent = f"{int((int(hour.temp) - low) / (high - low) * 100)}px"
     if QWEATHER_HOURLYTYPE == HourlyType.current_12h:
         hourly = hourly[:12]
