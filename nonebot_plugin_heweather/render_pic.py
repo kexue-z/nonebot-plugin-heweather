@@ -1,3 +1,4 @@
+import platform
 from datetime import datetime
 from typing import List
 from pathlib import Path
@@ -8,8 +9,8 @@ require("nonebot_plugin_htmlrender")
 
 from nonebot_plugin_htmlrender import template_to_pic
 
-from .config import QWEATHER_HOURLYTYPE
-from .model import Air, Daily, Hourly, HourlyType
+from .config import QWEATHER_HOURLYSTYLE, QWEATHER_HOURLYTYPE
+from .model import Air, Daily, Hourly, HourlyStyle, HourlyType
 from .weather_data import Weather
 
 
@@ -31,6 +32,10 @@ async def render(weather: Weather) -> bytes:
             "warning": weather.warning,
             "air": air,
             "hours": add_hour_data(weather.hourly.hourly),
+            "hourly_style": QWEATHER_HOURLYSTYLE,
+            "curr_hour": int(
+                datetime.fromisoformat(weather.now.now.obsTime).strftime("%I")
+            ),
         },
         pages={
             "viewport": {"width": 1000, "height": 300},
@@ -44,13 +49,20 @@ def add_hour_data(hourly: List[Hourly]):
     high = max([int(hour.temp) for hour in hourly])
     low = int(min_temp - (high - min_temp))
     for hour in hourly:
-        date_time = datetime.fromisoformat(hour.fxTime)  # 2023-08-09 23:00:00+08:00
-        hour.hour = date_time.strftime("%H:%M")
+        date_time = datetime.fromisoformat(hour.fxTime)
+        if platform.system() == "Windows":
+            hour.hour = date_time.strftime("%#I%p")
+        else:
+            hour.hour = date_time.strftime("%-I%p")
         hour.temp_percent = f"{int((int(hour.temp) - low) / (high - low) * 100)}px"
-    if QWEATHER_HOURLYTYPE == HourlyType.current_12h:
-        hourly = hourly[:12]
-    if QWEATHER_HOURLYTYPE == HourlyType.current_24h:
-        hourly = hourly[::2]
+        hour.hour_key = int(date_time.strftime("%I"))
+    if QWEATHER_HOURLYSTYLE == HourlyStyle.clock:
+        hourly.sort(key=lambda x: x.hour_key)
+    else:
+        if QWEATHER_HOURLYTYPE == HourlyType.current_12h:
+            hourly = hourly[:12]
+        if QWEATHER_HOURLYTYPE == HourlyType.current_24h:
+            hourly = hourly[::2]
     return hourly
 
 

@@ -73,7 +73,9 @@ class Hourly(BaseModel, extra=Extra.allow):
     temp: str
     icon: str
     text: str
+    pop: str
     temp_percent: Optional[str]
+    hour_key: int = 0
 
 
 class HourlyApi(BaseModel, extra=Extra.allow):
@@ -84,3 +86,8 @@ class HourlyApi(BaseModel, extra=Extra.allow):
 class HourlyType(IntEnum):
     current_12h = 1
     current_24h = 2
+
+
+class HourlyStyle(IntEnum):
+    bar = 1
+    clock = 2

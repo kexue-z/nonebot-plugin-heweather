@@ -59,6 +59,15 @@ QWEATHER_APIKEY = xxx
 QWEATHER_APITYPE = 0
 ```
 
+## 逐小时显示类型 可选配置 环境变量
+
+1 = 平铺 (默认值)
+2 = 表盘
+
+```
+QWEATHER_HOURLYSTYLE = 1
+```
+
 ## 逐小时类型 可选配置 环境变量
 
 1 = 未来12小时 (默认值)
