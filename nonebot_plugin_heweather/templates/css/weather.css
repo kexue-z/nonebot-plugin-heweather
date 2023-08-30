@@ -72,6 +72,10 @@ p.realtime-text {
   font-size: 60px;
 }
 
+.hour-icon-size {
+  font-size: 85px;
+}
+
 .date {
   color: rgba(232, 230, 227, 0.55);
   font-size: 20px;
@@ -128,6 +132,7 @@ p.realtime-text {
   background-image: linear-gradient(225deg, #b78c579d, #f2d5b2b6);
   margin-top: 20px;
 }
+
 .warning-side {
   display: flex;
   align-items: center;
@@ -141,9 +146,11 @@ p.realtime-text {
   font-size: 20px;
   color: rgba(255, 255, 255, 0.55);
 }
+
 .warning-info {
   padding: 20px;
 }
+
 .tem-text {
   width: 120px;
   text-align: right;
@@ -166,9 +173,12 @@ p.realtime-text {
 
 .air-tag {
   display: inline-block;
-  width: intrinsic; /* Safari/WebKit 使用了非标准的名称 */
-  width: -moz-max-content; /* Firefox/Gecko */
-  width: -webkit-max-content; /* Chrome */
+  width: intrinsic;
+  /* Safari/WebKit 使用了非标准的名称 */
+  width: -moz-max-content;
+  /* Firefox/Gecko */
+  width: -webkit-max-content;
+  /* Chrome */
   padding: 4px 32px;
   font-size: 30px;
   line-height: 32px;
@@ -213,7 +223,7 @@ meter {
 .tem-vert-line {
   width: 10px;
   border-radius: 10px;
-  background:  #427bff;
+  background: #427bff;
   margin: 0 auto;
   bottom: 0;
   left: 0;
@@ -224,4 +234,114 @@ meter {
 .hour-data {
   text-align: center;
   width: 60px;
+}
+
+.container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  width: 300px;
+}
+
+.info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.info .icon {
+  height: 30px;
+}
+
+.info .location {
+  color: #4e82a2;
+  fill: #4e82a2;
+}
+
+.info .spacer {
+  flex-grow: 1;
+}
+
+.info .time {
+  color: #419192;
+  fill: #419192;
+}
+
+.info .time .splitter {
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.clock {
+  overflow: hidden;
+  position: relative;
+}
+
+.clock .hour-hand {
+  position: relative;
+  top: 0;
+  left: 0;
+  transform-origin: 50% 50%;
+  animation-delay: 0s;
+}
+
+.clock .number {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.clock .number text>tspan {
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  font-stretch: normal;
+  font-size: 50px;
+  font-family: sans-serif;
+  font-variant-ligatures: normal;
+  font-variant-caps: normal;
+  font-variant-numeric: normal;
+  font-variant-east-asian: normal;
+  display: inline;
+  fill: #ccc;
+  fill-opacity: 1;
+}
+
+.clock .degree {
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 2.5rem;
+  color: #a3a3a3;
+  transform: translate(-50%, -60%);
+}
+
+g#layer-pop .pop-data {
+  font-size: 100px;
+}
+
+g#layer-pop .pop-text {
+  color: rgba(232, 230, 227, 0.55);
+  font-size: 30px;
+  text-size-adjust: 100%;
 }
