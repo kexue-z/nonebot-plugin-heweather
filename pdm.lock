@@ -6,7 +6,7 @@ groups = ["default", "dev"]
 cross_platform = true
 static_urls = false
 lock_version = "4.3"
-content_hash = "sha256:420221fc6786fccdf09c881257925de7789dec4e354bed677f8eb6498cc125e7"
+content_hash = "sha256:3fc5671a03ff20f262b2b41409a7eb18118e48b9d3b79a5cdc956fa2053c8a83"
 
 [[package]]
 name = "aiofiles"
@@ -641,7 +641,7 @@ files = [
 name = "nonebot-plugin-htmlrender"
 version = "0.2.2"
 requires_python = "<4.0,>=3.8"
-summary = "é€šè¿‡æµ�è§ˆå™¨æ¸²æŸ“å›¾ç‰‡"
+summary = "通过浏览器渲染图片"
 dependencies = [
     "Pygments>=2.10.0",
     "aiofiles>=0.8.0",
