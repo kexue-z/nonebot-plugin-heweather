@@ -46,7 +46,10 @@ def add_hour_data(hourly: List[Hourly]):
             hour.hour = date_time.strftime("%#I%p")
         else:
             hour.hour = date_time.strftime("%-I%p")
-        hour.temp_percent = f"{int((int(hour.temp) - low) / (high - low) * 100)}px"
+        if high == low:
+            hour.temp_percent = "100px"
+        else:
+            hour.temp_percent = f"{int((int(hour.temp) - low) / (high - low) * 100)}px"
     if QWEATHER_HOURLYTYPE == HourlyType.current_12h:
         hourly = hourly[:12]
     if QWEATHER_HOURLYTYPE == HourlyType.current_24h:
