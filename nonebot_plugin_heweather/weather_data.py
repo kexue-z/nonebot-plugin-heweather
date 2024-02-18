@@ -46,8 +46,9 @@ class Weather:
 
     def _forecast_days(self):
         self.forecast_days = QWEATHER_FORECASE_DAYS
-        if self.api_type == 0 and not (3 <= self.forecast_days <= 7):
-            raise ConfigError("api_type = 0 免费订阅 预报天数必须 3<= x <=7")
+        if self.forecast_days:
+            if self.api_type == 0 and not (3 <= self.forecast_days <= 7):
+                raise ConfigError("api_type = 0 免费订阅 预报天数必须 3<= x <=7")
 
     def __init__(self, city_name: str, api_key: str, api_type: Union[int, str] = 0):
         self.city_name = city_name
