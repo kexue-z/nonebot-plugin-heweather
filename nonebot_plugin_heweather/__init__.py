@@ -1,17 +1,17 @@
+from nonebot import on_keyword, require
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot import require, on_keyword
 from nonebot.params import EventPlainText
 from nonebot.plugin import PluginMetadata, inherit_supported_adapters
 
 require("nonebot_plugin_saa")
 require("nonebot_plugin_htmlrender")
 
-from nonebot_plugin_saa import Image, MessageFactory
+from nonebot_plugin_saa import Image, MessageFactory  # noqa: E402
 
-from .render_pic import render
-from .weather_data import Weather, ConfigError, CityNotFoundError
-from .config import DEBUG, QWEATHER_APIKEY, QWEATHER_APITYPE, Config
+from .config import DEBUG, QWEATHER_APIKEY, QWEATHER_APITYPE, Config  # noqa: E402
+from .render_pic import render  # noqa: E402
+from .weather_data import CityNotFoundError, ConfigError, Weather  # noqa: E402
 
 __plugin_meta__ = PluginMetadata(
     name="nonebot-plugin-heweather",
