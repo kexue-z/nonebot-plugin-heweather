@@ -4,6 +4,7 @@ from typing import Optional, Union
 from httpx import AsyncClient, Response
 from nonebot.log import logger
 
+from .config import QWEATHER_FORECASE_DAYS
 from .model import AirApi, DailyApi, HourlyApi, NowApi, WarningApi
 
 
@@ -27,17 +28,15 @@ class Weather:
             self.url_weather_warning = "https://api.qweather.com/v7/warning/now"
             self.url_air = "https://api.qweather.com/v7/air/now"
             self.url_hourly = "https://api.qweather.com/v7/weather/24h"
-            self.forecast_days = 7
-            # if self.api_type == 1:
+
             logger.info("使用标准订阅API")
-            # else:
-            #     logger.info("使用商业版API")
+
         elif self.api_type == 0:
             self.url_weather_api = "https://devapi.qweather.com/v7/weather/"
             self.url_weather_warning = "https://devapi.qweather.com/v7/warning/now"
             self.url_air = "https://devapi.qweather.com/v7/air/now"
             self.url_hourly = "https://devapi.qweather.com/v7/weather/24h"
-            self.forecast_days = 3
+
             logger.info("使用免费订阅API")
         else:
             raise ConfigError(
@@ -45,11 +44,18 @@ class Weather:
                 f"\n当前为: ({type(self.api_type)}){self.api_type}"
             )
 
+    def _forecast_days(self):
+        self.forecast_days = QWEATHER_FORECASE_DAYS
+        if self.api_type == 0 and not (3 <= self.forecast_days <= 7):
+            raise ConfigError("api_type = 0 免费订阅 预报天数必须 3<= x <=7")
+
     def __init__(self, city_name: str, api_key: str, api_type: Union[int, str] = 0):
         self.city_name = city_name
         self.apikey = api_key
         self.api_type = int(api_type)
         self.__url__()
+
+        self._forecast_days()
 
         # self.now: Optional[Dict[str, str]] = None
         # self.daily = None

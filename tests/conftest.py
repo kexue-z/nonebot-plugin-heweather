@@ -15,6 +15,7 @@ def load_bot():
 
     config.qweather_apikey = getenv("QWEATHER_APIKEY")
     config.qweather_apitype = getenv("QWEATHER_APITYPE")
+    config.qweather_forecase_days = getenv("QWEATHER_FORECASE_DAYS")
 
     # 加载插件
     nonebot.load_plugin("nonebot_plugin_heweather")
