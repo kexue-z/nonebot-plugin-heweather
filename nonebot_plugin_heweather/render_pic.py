@@ -1,7 +1,7 @@
 import platform
 from datetime import datetime
-from typing import List
 from pathlib import Path
+from typing import List
 
 from nonebot_plugin_htmlrender import template_to_pic
 

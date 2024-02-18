@@ -1,10 +1,10 @@
 import asyncio
-from typing import Union, Optional
+from typing import Optional, Union
 
+from httpx import AsyncClient, Response
 from nonebot.log import logger
-from httpx import Response, AsyncClient
 
-from .model import AirApi, NowApi, DailyApi, HourlyApi, WarningApi
+from .model import AirApi, DailyApi, HourlyApi, NowApi, WarningApi
 
 
 class APIError(Exception):
