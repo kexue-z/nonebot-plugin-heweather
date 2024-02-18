@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-heweather"
-version = "0.7.0"
+version = "0.8.0"
 description = "Get Heweather information and convert to pictures"
 authors = [{ name = "kexue", email = "xana278@foxmail.com" }]
 dependencies = [
