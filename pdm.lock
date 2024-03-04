@@ -726,7 +726,7 @@ files = [
 name = "nonebot-plugin-htmlrender"
 version = "0.3.0"
 requires_python = "<4.0,>=3.8"
-summary = "é€šè¿‡æµ�è§ˆå™¨æ¸²æŸ“å›¾ç‰‡"
+summary = "通过浏览器渲染图片"
 dependencies = [
     "Pygments>=2.10.0",
     "aiofiles>=0.8.0",
