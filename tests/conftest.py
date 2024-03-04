@@ -1,12 +1,12 @@
 from os import getenv
 
-import pytest
 import nonebot
+import pytest
 from nonebot.adapters.onebot.v11 import Adapter
 
 
 @pytest.fixture(scope="session", autouse=True)
-def load_bot():
+def _():
     # 加载适配器
     driver = nonebot.get_driver()
     driver.register_adapter(Adapter)

@@ -1,16 +1,16 @@
 import pytest
-from nonebug import App
 from nonebot import get_driver
+from nonebug import App
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_heweather(app: App):
     from io import BytesIO
 
     from PIL import Image
 
     from nonebot_plugin_heweather.render_pic import render
-    from nonebot_plugin_heweather.weather_data import Weather, CityNotFoundError
+    from nonebot_plugin_heweather.weather_data import CityNotFoundError, Weather
 
     async with app.test_server():
         config = get_driver().config
