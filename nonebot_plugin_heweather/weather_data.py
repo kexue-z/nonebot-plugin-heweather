@@ -1,5 +1,5 @@
 import asyncio
-from typing import Optional, Union
+from typing import Optional
 
 from httpx import AsyncClient, Response
 from nonebot.log import logger
@@ -8,16 +8,13 @@ from .config import QWEATHER_FORECASE_DAYS
 from .model import AirApi, DailyApi, HourlyApi, NowApi, WarningApi
 
 
-class APIError(Exception):
-    ...
+class APIError(Exception): ...
 
 
-class ConfigError(Exception):
-    ...
+class ConfigError(Exception): ...
 
 
-class CityNotFoundError(Exception):
-    ...
+class CityNotFoundError(Exception): ...
 
 
 class Weather:
@@ -40,7 +37,8 @@ class Weather:
             logger.info("使用免费订阅API")
         else:
             raise ConfigError(
-                "api_type 必须是为 (int)0 -> 免费订阅, (int)1 -> 标准订阅, (int)2 -> 商业版"
+                "api_type 必须是为 (int)0 -> 免费订阅, "
+                "(int)1 -> 标准订阅, (int)2 -> 商业版"
                 f"\n当前为: ({type(self.api_type)}){self.api_type}"
             )
 
@@ -50,10 +48,10 @@ class Weather:
             if self.api_type == 0 and not (3 <= self.forecast_days <= 7):
                 raise ConfigError("api_type = 0 免费订阅 预报天数必须 3<= x <=7")
 
-    def __init__(self, city_name: str, api_key: str, api_type: Union[int, str] = 0):
+    def __init__(self, city_name: str, api_key: str, api_type: int = 0):
         self.city_name = city_name
         self.apikey = api_key
-        self.api_type = int(api_type)
+        self.api_type = api_type
         self.__url__()
 
         self._forecast_days()
