@@ -45,8 +45,8 @@ class Daily(BaseModel):
             extra = "allow"
 
     fxDate: str
-    week: Optional[str]
-    date: Optional[str]
+    week: Optional[str] = None
+    date: Optional[str] = None
     tempMax: str
     tempMin: str
     textDay: str
@@ -83,7 +83,7 @@ class Air(BaseModel):
     co: str
     no2: str
     so2: str
-    tag_color: Optional[str]
+    tag_color: Optional[str] = None
 
 
 class AirApi(BaseModel):
@@ -95,7 +95,7 @@ class AirApi(BaseModel):
             extra = "allow"
 
     code: str
-    now: Optional[Air]
+    now: Optional[Air] = None
 
 
 class Warning(BaseModel):
@@ -121,7 +121,7 @@ class WarningApi(BaseModel):
             extra = "allow"
 
     code: str
-    warning: Optional[List[Warning]]
+    warning: Optional[List[Warning]] = None
 
 
 class Hourly(BaseModel):
@@ -133,11 +133,11 @@ class Hourly(BaseModel):
             extra = "allow"
 
     fxTime: str
-    hour: Optional[str]
+    hour: Optional[str] = None
     temp: str
     icon: str
     text: str
-    temp_percent: Optional[str]
+    temp_percent: Optional[str] = None
 
 
 class HourlyApi(BaseModel):
