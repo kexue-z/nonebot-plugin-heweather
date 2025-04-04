@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-heweather"
-version = "0.9.0.beta.2"
+version = "0.9.0"
 description = "Get Heweather information and convert to pictures"
 authors = [{ name = "kexue-z", email = "x@kexue-cloud.cn" }]
 requires-python = ">=3.10"
