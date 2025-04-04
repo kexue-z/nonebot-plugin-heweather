@@ -7,7 +7,7 @@ require("nonebot_plugin_htmlrender")
 
 from nonebot_plugin_alconna import Alconna, Args, UniMessage, on_alconna
 
-from .config import DEBUG, QWEATHER_APIKEY, QWEATHER_APITYPE, Config
+from .config import DEBUG, QWEATHER_APIKEY, QWEATHER_APITYPE, QWEATHER_USE_JWT, Config
 from .render_pic import render
 from .weather_data import CityNotFoundError, ConfigError, Weather
 
@@ -33,10 +33,13 @@ weather.shortcut(r"^天气(?P<city>.+)$", {"args": ["{city}"], "fuzzy": False})
 
 @weather.handle()
 async def _(matcher: Matcher, city: str):
-    if QWEATHER_APIKEY is None or QWEATHER_APITYPE is None:
-        raise ConfigError("请设置 qweather_apikey 和 qweather_apitype")
+    if not (QWEATHER_APIKEY or QWEATHER_USE_JWT):
+        raise ConfigError("请设置 QWEATHER_APIKEY 或 JWT ")
 
-    w_data = Weather(city_name=city, api_key=QWEATHER_APIKEY, api_type=QWEATHER_APITYPE)
+    if QWEATHER_APITYPE is None:
+        raise ConfigError("请设置 QWEATHER_APITYPE")
+
+    w_data = Weather(city_name=city, api_type=QWEATHER_APITYPE)
     try:
         await w_data.load_data()
     except CityNotFoundError:

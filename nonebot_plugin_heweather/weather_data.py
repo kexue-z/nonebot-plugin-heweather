@@ -1,46 +1,44 @@
 import asyncio
 
-from httpx import AsyncClient, Response
+from httpx import URL, AsyncClient, Response
 from nonebot.log import logger
 
-from .config import QWEATHER_FORECASE_DAYS, QWEATHER_USE_JWT
+from .config import (
+    QWEATHER_APIHOST,
+    QWEATHER_APIKEY,
+    QWEATHER_FORECASE_DAYS,
+    QWEATHER_USE_JWT,
+)
 from .model import AirApi, DailyApi, HourlyApi, NowApi, WarningApi
+from .types import APIError, CityNotFoundError, ConfigError
 from .utils import get_jwt_token
-
-
-class APIError(Exception): ...
-
-
-class ConfigError(Exception): ...
-
-
-class CityNotFoundError(Exception): ...
 
 
 class Weather:
     def __url__(self):
-        self.url_geoapi = "https://geoapi.qweather.com/v2/city/"
-        if self.api_type == 2 or self.api_type == 1:
-            self.url_weather_api = "https://api.qweather.com/v7/weather/"
-            self.url_weather_warning = "https://api.qweather.com/v7/warning/now"
-            self.url_air = "https://api.qweather.com/v7/air/now"
-            self.url_hourly = "https://api.qweather.com/v7/weather/24h"
+        self.host = URL(QWEATHER_APIHOST)
+        # self.url_geoapi = "https://geoapi.qweather.com/v2/city/"
+        # if self.api_type == 2 or self.api_type == 1:
+        #     self.url_weather_api = "https://api.qweather.com/v7/weather/"
+        #     self.url_weather_warning = "https://api.qweather.com/v7/warning/now"
+        #     self.url_air = "https://api.qweather.com/v7/air/now"
+        #     self.url_hourly = "https://api.qweather.com/v7/weather/24h"
 
-            logger.info("使用标准订阅API")
+        #     logger.info("使用标准订阅API")
 
-        elif self.api_type == 0:
-            self.url_weather_api = "https://devapi.qweather.com/v7/weather/"
-            self.url_weather_warning = "https://devapi.qweather.com/v7/warning/now"
-            self.url_air = "https://devapi.qweather.com/v7/air/now"
-            self.url_hourly = "https://devapi.qweather.com/v7/weather/24h"
+        # elif self.api_type == 0:
+        #     self.url_weather_api = "https://devapi.qweather.com/v7/weather/"
+        #     self.url_weather_warning = "https://devapi.qweather.com/v7/warning/now"
+        #     self.url_air = "https://devapi.qweather.com/v7/air/now"
+        #     self.url_hourly = "https://devapi.qweather.com/v7/weather/24h"
 
-            logger.info("使用免费订阅API")
-        else:
-            raise ConfigError(
-                "api_type 必须是为 (int)0 -> 免费订阅, "
-                "(int)1 -> 标准订阅, (int)2 -> 商业版"
-                f"\n当前为: ({type(self.api_type)}){self.api_type}"
-            )
+        #     logger.info("使用免费订阅API")
+        # else:
+        #     raise ConfigError(
+        #         "api_type 必须是为 (int)0 -> 免费订阅, "
+        #         "(int)1 -> 标准订阅, (int)2 -> 商业版"
+        #         f"\n当前为: ({type(self.api_type)}){self.api_type}"
+        #     )
 
     def _forecast_days(self):
         self.forecast_days = QWEATHER_FORECASE_DAYS
@@ -48,9 +46,9 @@ class Weather:
             if self.api_type == 0 and not (3 <= self.forecast_days <= 7):
                 raise ConfigError("api_type = 0 免费订阅 预报天数必须 3<= x <=7")
 
-    def __init__(self, city_name: str, api_key: str, api_type: int = 0):
+    def __init__(self, city_name: str, api_type: int = 0):
         self.city_name = city_name
-        self.apikey = api_key
+        # self.apikey = api_key
         self.api_type = api_type
         self.__url__()
 
@@ -75,26 +73,33 @@ class Weather:
         )
         self._data_validate()
 
-    async def _get_data(self, url: str, params: dict) -> Response:
+    async def _get_data(self, url: URL, params: dict) -> Response:
         headers = {}
 
-        if QWEATHER_USE_JWT:
+        if QWEATHER_APIKEY:
+            headers = {"X-QW-Api-Key": QWEATHER_APIKEY}
+
+        if QWEATHER_USE_JWT and not QWEATHER_APIKEY:
             headers = {
                 "Authorization": f"Bearer {get_jwt_token()}",
             }
 
+        if not headers:
+            raise ConfigError("请确保已经配置 apikey 或 jwt")
+
         async with AsyncClient() as client:
-            res = await client.get(url, params=params, headers=headers or None)
+            res = await client.get(url, params=params, headers=headers)
         return res
 
-    async def _get_city_id(self, api_type: str = "lookup"):
+    async def _get_city_id(self):
+        url = self.host.join("/geo/v2/city/lookup")
         res = await self._get_data(
-            url=self.url_geoapi + api_type,
-            params={"location": self.city_name, "key": self.apikey, "number": 1},
+            url=url,
+            params={"location": self.city_name, "number": 1},
         )
 
         res = res.json()
-        logger.debug(res)
+
         if res["code"] == "404":
             raise CityNotFoundError()
         elif res["code"] != "200":
@@ -125,45 +130,50 @@ class Weather:
 
     @property
     async def _now(self) -> NowApi:
+        url = self.host.join("/v7/weather/now")
         res = await self._get_data(
-            url=self.url_weather_api + "now",
-            params={"location": self.city_id, "key": self.apikey},
+            url=url,
+            params={"location": self.city_id},
         )
         self._check_response(res)
         return NowApi(**res.json())
 
     @property
     async def _daily(self) -> DailyApi:
+        url = self.host.join(f"/v7/weather/{self.forecast_days}d")
         res = await self._get_data(
-            url=self.url_weather_api + str(self.forecast_days) + "d",
-            params={"location": self.city_id, "key": self.apikey},
+            url=url,
+            params={"location": self.city_id},
         )
         self._check_response(res)
         return DailyApi(**res.json())
 
     @property
     async def _air(self) -> AirApi:
+        url = self.host.join("/v7/air/now")
         res = await self._get_data(
-            url=self.url_air,
-            params={"location": self.city_id, "key": self.apikey},
+            url=url,
+            params={"location": self.city_id},
         )
         self._check_response(res)
         return AirApi(**res.json())
 
     @property
     async def _warning(self) -> WarningApi | None:
+        url = self.host.join("/v7/warning/now")
         res = await self._get_data(
-            url=self.url_weather_warning,
-            params={"location": self.city_id, "key": self.apikey},
+            url=url,
+            params={"location": self.city_id},
         )
         self._check_response(res)
         return None if res.json().get("code") == "204" else WarningApi(**res.json())
 
     @property
     async def _hourly(self) -> HourlyApi:
+        url = self.host.join("/v7/weather/24h")
         res = await self._get_data(
-            url=self.url_hourly,
-            params={"location": self.city_id, "key": self.apikey},
+            url=url,
+            params={"location": self.city_id},
         )
         self._check_response(res)
         return HourlyApi(**res.json())

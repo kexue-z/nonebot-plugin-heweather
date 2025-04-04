@@ -5,6 +5,7 @@ from .model import HourlyType
 
 
 class Config(BaseModel):
+    qweather_apihost: str = Field(default="https://api.qweather.com")
     qweather_apikey: str | None = Field(
         default=None, deprecated="建议使用更安全的JWT key"
     )
@@ -28,6 +29,7 @@ class Config(BaseModel):
 
 
 plugin_config: Config = get_plugin_config(Config)
+QWEATHER_APIHOST = plugin_config.qweather_apihost
 QWEATHER_APIKEY = plugin_config.qweather_apikey
 QWEATHER_APITYPE = plugin_config.qweather_apitype
 QWEATHER_HOURLYTYPE = plugin_config.qweather_hourlytype
