@@ -4,7 +4,7 @@ import platform
 
 from nonebot_plugin_htmlrender import template_to_pic
 
-from .config import QWEATHER_HOURLYTYPE
+from .config import plugin_config
 from .model import Air, Daily, Hourly, HourlyType
 from .weather_data import Weather
 
@@ -49,9 +49,9 @@ def add_hour_data(hourly: list[Hourly]):
             hour.temp_percent = "100px"
         else:
             hour.temp_percent = f"{int((int(hour.temp) - low) / (high - low) * 100)}px"
-    if QWEATHER_HOURLYTYPE == HourlyType.current_12h:
+    if plugin_config.qweather_hourlytype == HourlyType.current_12h:
         hourly = hourly[:12]
-    if QWEATHER_HOURLYTYPE == HourlyType.current_24h:
+    if plugin_config.qweather_hourlytype == HourlyType.current_24h:
         hourly = hourly[::2]
     return hourly
 

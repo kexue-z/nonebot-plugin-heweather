@@ -3,12 +3,7 @@ import asyncio
 from httpx import URL, AsyncClient, Response
 from nonebot.log import logger
 
-from .config import (
-    QWEATHER_APIHOST,
-    QWEATHER_APIKEY,
-    QWEATHER_FORECASE_DAYS,
-    QWEATHER_USE_JWT,
-)
+from .config import plugin_config
 from .model import AirApi, DailyApi, HourlyApi, NowApi, WarningApi
 from .types import APIError, CityNotFoundError, ConfigError
 from .utils import get_jwt_token
@@ -16,7 +11,7 @@ from .utils import get_jwt_token
 
 class Weather:
     def __url__(self):
-        self.host = URL(QWEATHER_APIHOST)
+        self.host = URL(plugin_config.qweather_apihost)
         # self.url_geoapi = "https://geoapi.qweather.com/v2/city/"
         # if self.api_type == 2 or self.api_type == 1:
         #     self.url_weather_api = "https://api.qweather.com/v7/weather/"
@@ -41,7 +36,7 @@ class Weather:
         #     )
 
     def _forecast_days(self):
-        self.forecast_days = QWEATHER_FORECASE_DAYS
+        self.forecast_days = plugin_config.qweather_forecase_days
         if self.forecast_days:
             if self.api_type == 0 and not (3 <= self.forecast_days <= 7):
                 raise ConfigError("api_type = 0 免费订阅 预报天数必须 3<= x <=7")
@@ -76,10 +71,10 @@ class Weather:
     async def _get_data(self, url: URL, params: dict) -> Response:
         headers = {}
 
-        if QWEATHER_APIKEY:
-            headers = {"X-QW-Api-Key": QWEATHER_APIKEY}
+        if plugin_config.qweather_apikey:
+            headers = {"X-QW-Api-Key": plugin_config.qweather_apikey}
 
-        if QWEATHER_USE_JWT and not QWEATHER_APIKEY:
+        if plugin_config.qweather_use_jwt and not plugin_config.qweather_apikey:
             headers = {
                 "Authorization": f"Bearer {get_jwt_token()}",
             }

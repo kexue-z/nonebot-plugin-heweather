@@ -29,13 +29,3 @@ class Config(BaseModel):
 
 
 plugin_config: Config = get_plugin_config(Config)
-QWEATHER_APIHOST = plugin_config.qweather_apihost
-QWEATHER_APIKEY = plugin_config.qweather_apikey
-QWEATHER_APITYPE = plugin_config.qweather_apitype
-QWEATHER_HOURLYTYPE = plugin_config.qweather_hourlytype
-QWEATHER_FORECASE_DAYS = plugin_config.qweather_forecase_days
-DEBUG = plugin_config.debug
-QWEATHER_USE_JWT = plugin_config.qweather_use_jwt
-QWEATHER_JWT_SUB = plugin_config.qweather_jwt_sub
-QWEATHER_JWT_PRIVATE_KEY = plugin_config.qweather_jwt_private_key
-QWEATHER_JWT_KID = plugin_config.qweather_jwt_kid
