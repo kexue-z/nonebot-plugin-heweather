@@ -57,3 +57,5 @@ jobs:
 
       - name: Publish Package to GitHub Release
         run: gh release create ${{ steps.version.outputs.TAG_NAME }} dist/*.tar.gz dist/*.whl -t "🔖 ${{ steps.version.outputs.TAG_NAME }}" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
