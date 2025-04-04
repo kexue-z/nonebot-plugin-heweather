@@ -1,7 +1,6 @@
-from nonebot import require
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot.plugin import PluginMetadata, inherit_supported_adapters
+from nonebot.plugin import PluginMetadata, inherit_supported_adapters, require
 
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_htmlrender")

@@ -1,5 +1,4 @@
 from enum import IntEnum
-from typing import List, Optional
 
 from nonebot.compat import PYDANTIC_V2, ConfigDict
 from pydantic import BaseModel
@@ -45,8 +44,8 @@ class Daily(BaseModel):
             extra = "allow"
 
     fxDate: str
-    week: Optional[str] = None
-    date: Optional[str] = None
+    week: str | None = None
+    date: str | None = None
     tempMax: str
     tempMin: str
     textDay: str
@@ -64,7 +63,7 @@ class DailyApi(BaseModel):
             extra = "allow"
 
     code: str
-    daily: List[Daily]
+    daily: list[Daily]
 
 
 class Air(BaseModel):
@@ -83,7 +82,7 @@ class Air(BaseModel):
     co: str
     no2: str
     so2: str
-    tag_color: Optional[str] = None
+    tag_color: str | None = None
 
 
 class AirApi(BaseModel):
@@ -95,7 +94,7 @@ class AirApi(BaseModel):
             extra = "allow"
 
     code: str
-    now: Optional[Air] = None
+    now: Air | None = None
 
 
 class Warning(BaseModel):
@@ -121,7 +120,7 @@ class WarningApi(BaseModel):
             extra = "allow"
 
     code: str
-    warning: Optional[List[Warning]] = None
+    warning: list[Warning] | None = None
 
 
 class Hourly(BaseModel):
@@ -133,11 +132,11 @@ class Hourly(BaseModel):
             extra = "allow"
 
     fxTime: str
-    hour: Optional[str] = None
+    hour: str | None = None
     temp: str
     icon: str
     text: str
-    temp_percent: Optional[str] = None
+    temp_percent: str | None = None
 
 
 class HourlyApi(BaseModel):
@@ -149,7 +148,7 @@ class HourlyApi(BaseModel):
             extra = "allow"
 
     code: str
-    hourly: List[Hourly]
+    hourly: list[Hourly]
 
 
 class HourlyType(IntEnum):
