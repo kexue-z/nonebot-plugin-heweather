@@ -3,8 +3,9 @@ import asyncio
 from httpx import AsyncClient, Response
 from nonebot.log import logger
 
-from .config import QWEATHER_FORECASE_DAYS
+from .config import QWEATHER_FORECASE_DAYS, QWEATHER_USE_JWT
 from .model import AirApi, DailyApi, HourlyApi, NowApi, WarningApi
+from .utils import get_jwt_token
 
 
 class APIError(Exception): ...
@@ -75,8 +76,15 @@ class Weather:
         self._data_validate()
 
     async def _get_data(self, url: str, params: dict) -> Response:
+        headers = {}
+
+        if QWEATHER_USE_JWT:
+            headers = {
+                "Authorization": f"Bearer {get_jwt_token()}",
+            }
+
         async with AsyncClient() as client:
-            res = await client.get(url, params=params)
+            res = await client.get(url, params=params, headers=headers or None)
         return res
 
     async def _get_city_id(self, api_type: str = "lookup"):
