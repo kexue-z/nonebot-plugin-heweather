@@ -1,8 +1,8 @@
 from os import getenv
 
 import nonebot
-import pytest
 from nonebot.adapters.onebot.v11 import Adapter
+import pytest
 
 
 @pytest.fixture(scope="session", autouse=True)

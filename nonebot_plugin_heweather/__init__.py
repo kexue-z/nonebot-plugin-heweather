@@ -1,14 +1,13 @@
-from nonebot import require
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot.plugin import PluginMetadata, inherit_supported_adapters
+from nonebot.plugin import PluginMetadata, inherit_supported_adapters, require
 
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_htmlrender")
 
 from nonebot_plugin_alconna import Alconna, Args, UniMessage, on_alconna
 
-from .config import DEBUG, QWEATHER_APIKEY, QWEATHER_APITYPE, Config
+from .config import Config, plugin_config
 from .render_pic import render
 from .weather_data import CityNotFoundError, ConfigError, Weather
 
@@ -23,7 +22,7 @@ __plugin_meta__ = PluginMetadata(
 )
 
 
-if DEBUG:
+if plugin_config.debug:
     logger.debug("将会保存图片到 weather.png")
 
 
@@ -34,10 +33,13 @@ weather.shortcut(r"^天气(?P<city>.+)$", {"args": ["{city}"], "fuzzy": False})
 
 @weather.handle()
 async def _(matcher: Matcher, city: str):
-    if QWEATHER_APIKEY is None or QWEATHER_APITYPE is None:
-        raise ConfigError("请设置 qweather_apikey 和 qweather_apitype")
+    if not (plugin_config.qweather_apikey or plugin_config.qweather_use_jwt):
+        raise ConfigError("请设置 QWEATHER_APIKEY 或 JWT ")
 
-    w_data = Weather(city_name=city, api_key=QWEATHER_APIKEY, api_type=QWEATHER_APITYPE)
+    if plugin_config.qweather_apitype is None:
+        raise ConfigError("请设置 QWEATHER_APITYPE")
+
+    w_data = Weather(city_name=city, api_type=plugin_config.qweather_apitype)
     try:
         await w_data.load_data()
     except CityNotFoundError:
@@ -47,7 +49,7 @@ async def _(matcher: Matcher, city: str):
 
     img = await render(w_data)
 
-    if DEBUG:
+    if plugin_config.debug:
         debug_save_img(img)
 
     await UniMessage.image(raw=img).send()

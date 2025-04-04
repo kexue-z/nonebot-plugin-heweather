@@ -1,9 +1,9 @@
-import pytest
 from nonebot import get_driver
 from nonebug import App
+import pytest
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_heweather(app: App):
     from io import BytesIO
 

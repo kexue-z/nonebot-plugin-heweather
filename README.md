@@ -43,50 +43,86 @@ _✨ 获取和风天气信息并转换为图片 ✨_
 
 # 配置
 
-## apikey 必须配置 环境配置
+## API 认证方式
 
-```
-QWEATHER_APIKEY = xxx
-```
+插件支持两种 API 认证方式：
 
-## api 类型 必须配置 环境配置
+1. API Key (传统方式，不推荐)
+2. JWT 认证 (更安全，推荐使用)
 
-0 = 免费订阅 (3-7 天天气预报)  
-1 = 标准订阅 (3-30 天天气预报)  
-2 = 高级订阅 (3-30 天天气预报)  
+### JWT 认证配置（推荐）
 
-```
-QWEATHER_APITYPE = 0
-```
+参考文档 [身份认证](https://dev.qweather.com/docs/configuration/authentication/) 生成 生成 Ed25519 密钥，并且上传公钥
 
-## 每日预报天数 可选配置 环境变量
+```env
+# 是否使用 JWT 认证，默认为 True
+QWEATHER_USE_JWT=true
 
-天数，默认 3 天
+# JWT sub，即控制台中的项目管理的项目ID
+QWEATHER_JWT_SUB=
 
-```
-QWEATHER_FORECASE_DAYS = 3
-```
+# JWT Key ID，在控制台上传公钥后获取，凭据 ID
+QWEATHER_JWT_KID=
 
-## 逐小时类型 可选配置 环境变量
-
-1 = 未来12小时 (默认值)  
-2 = 未来24小时  
-
-```
-QWEATHER_HOURLYTYPE = 1
+# JWT 私钥文本，需要自行生成，需要单行填写，例如
+# qweather_jwt_private_key="-----BEGIN PRIVATE KEY-----\n123abc\n-----END PRIVATE KEY-----"
+QWEATHER_JWT_PRIVATE_KEY=
 ```
 
-## APIKEY 获取方式
+### API Key 认证配置（不推荐）
 
-**1、注册和风天气账号**  
-进入官网注册[https://id.qweather.com/#/login](https://id.qweather.com/#/login)  
-**2、进入控制台**  
-登录后，点击 “和风天气开发者控制台”  
-**3、创建项目**  
-点击控制台左侧 “项目管理”，然后点击 “创建项目”，根据提示自行填写  
-“选择订阅” -> “免费订阅”，“设置 KEY” -> “Web API”，都填好后“创建”  
-**4、获取 key 并配置.env.xx**  
-返回 “项目管理”，可以看到创建的项目，点击 KEY 下面的 “查看”，复制 KEY 到你的.env.xx 即可。
+```env
+QWEATHER_APIKEY=
+```
+
+## API 主机配置
+
+参考文档 [API 配置](https://dev.qweather.com/docs/configuration/api-config/) 在 [控制台-设置](https://console.qweather.com/setting) 获取地址。务必添加 scheme `https://`
+
+```env
+# API 主机地址，默认为 https://api.qweather.com
+QWEATHER_APIHOST=https://api.qweather.com
+```
+
+## API 订阅类型
+
+参考 [订阅](https://dev.qweather.com/docs/finance/subscription/#comparison)
+
+```env
+# 0 = 免费订阅 (3-7 天天气预报)
+# 1 = 标准订阅 (3-30 天天气预报)
+# 2 = 高级订阅 (3-30 天天气预报)
+QWEATHER_APITYPE=0
+```
+
+## 天气预报配置
+
+```env
+# 每日预报天数，默认 3 天 根据订阅类型可选最多 30 天
+QWEATHER_FORECASE_DAYS=3
+
+# 逐小时预报类型
+# 1 = 未来12小时 (默认值)
+# 2 = 未来24小时
+QWEATHER_HOURLYTYPE=1
+```
+
+## 调试配置
+
+```env
+# 是否开启调试模式，默认为 false
+DEBUG=false
+```
+
+## 配置获取方式
+
+1. 进入[控制台](https://console.qweather.com/)
+2. 项目管理 -> 创建项目
+3. 创建凭据
+4. 选择 JWT 类型，并按照文档创建公钥和私钥
+5. 上传公钥并保存提交
+6. 设置 -> 开发者信息 -> API Host 获取地址
+7. 填写 .env 文件
 
 ## 参考文档
 
