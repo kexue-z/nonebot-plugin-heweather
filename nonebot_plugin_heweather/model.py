@@ -66,6 +66,128 @@ class DailyApi(BaseModel):
     daily: list[Daily]
 
 
+class AirColor(BaseModel):
+    if PYDANTIC_V2:
+        model_config = ConfigDict(extra="allow")
+    else:
+
+        class Config:
+            extra = "allow"
+
+    red: int
+    green: int
+    blue: int
+    alpha: float
+
+
+class AirPrimaryPollutant(BaseModel):
+    if PYDANTIC_V2:
+        model_config = ConfigDict(extra="allow")
+    else:
+
+        class Config:
+            extra = "allow"
+
+    code: str
+    name: str | None = None
+    fullName: str | None = None
+
+
+class AirHealthAdvice(BaseModel):
+    if PYDANTIC_V2:
+        model_config = ConfigDict(extra="allow")
+    else:
+
+        class Config:
+            extra = "allow"
+
+    generalPopulation: str | None = None
+    sensitivePopulation: str | None = None
+
+
+class AirHealth(BaseModel):
+    if PYDANTIC_V2:
+        model_config = ConfigDict(extra="allow")
+    else:
+
+        class Config:
+            extra = "allow"
+
+    effect: str | None = None
+    advice: AirHealthAdvice | None = None
+
+
+class AirQualityIndex(BaseModel):
+    if PYDANTIC_V2:
+        model_config = ConfigDict(extra="allow")
+    else:
+
+        class Config:
+            extra = "allow"
+
+    code: str
+    name: str
+    aqi: float
+    aqiDisplay: str
+    level: str | None = None
+    category: str | None = None
+    color: AirColor | None = None
+    primaryPollutant: AirPrimaryPollutant | None = None
+    health: AirHealth | None = None
+
+
+class AirConcentration(BaseModel):
+    if PYDANTIC_V2:
+        model_config = ConfigDict(extra="allow")
+    else:
+
+        class Config:
+            extra = "allow"
+
+    value: float
+    unit: str
+
+
+class AirSubIndex(BaseModel):
+    if PYDANTIC_V2:
+        model_config = ConfigDict(extra="allow")
+    else:
+
+        class Config:
+            extra = "allow"
+
+    code: str
+    aqi: float | None = None
+    aqiDisplay: str | None = None
+
+
+class AirPollutant(BaseModel):
+    if PYDANTIC_V2:
+        model_config = ConfigDict(extra="allow")
+    else:
+
+        class Config:
+            extra = "allow"
+
+    code: str
+    name: str
+    fullName: str | None = None
+    concentration: AirConcentration
+    subIndexes: list[AirSubIndex] | None = None
+
+
+class AirStation(BaseModel):
+    if PYDANTIC_V2:
+        model_config = ConfigDict(extra="allow")
+    else:
+
+        class Config:
+            extra = "allow"
+
+    id: str
+    name: str
+
+
 class Air(BaseModel):
     if PYDANTIC_V2:
         model_config = ConfigDict(extra="allow")
@@ -74,15 +196,19 @@ class Air(BaseModel):
         class Config:
             extra = "allow"
 
-    category: str
+    category: str | None = None
     aqi: str
-    pm2p5: str
-    pm10: str
-    o3: str
-    co: str
-    no2: str
-    so2: str
-    tag_color: str | None = None
+    aqiDisplay: str | None = None
+    level: str | None = None
+    color: AirColor | None = None
+    primaryPollutant: str | None = None
+    effect: str | None = None
+    pm2p5: str | None = None
+    pm10: str | None = None
+    o3: str | None = None
+    co: str | None = None
+    no2: str | None = None
+    so2: str | None = None
 
 
 class AirApi(BaseModel):
@@ -93,8 +219,9 @@ class AirApi(BaseModel):
         class Config:
             extra = "allow"
 
-    code: str
-    now: Air | None = None
+    indexes: list[AirQualityIndex]
+    pollutants: list[AirPollutant]
+    stations: list[AirStation] | None = None
 
 
 class Warning(BaseModel):

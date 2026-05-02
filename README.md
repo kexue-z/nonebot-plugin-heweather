@@ -43,21 +43,11 @@ _✨ 获取和风天气信息并转换为图片 ✨_
 
 # 配置
 
-## API 认证方式
+## JWT 认证配置
 
-插件支持两种 API 认证方式：
-
-1. API Key (传统方式，不推荐)
-2. JWT 认证 (更安全，推荐使用)
-
-### JWT 认证配置（推荐）
-
-参考文档 [身份认证](https://dev.qweather.com/docs/configuration/authentication/) 生成 生成 Ed25519 密钥，并且上传公钥
+参考文档 [身份认证](https://dev.qweather.com/docs/configuration/authentication/) 生成 Ed25519 密钥，并且上传公钥
 
 ```env
-# 是否使用 JWT 认证，默认为 True
-QWEATHER_USE_JWT=true
-
 # JWT sub，即控制台中的项目管理的项目ID
 QWEATHER_JWT_SUB=
 
@@ -69,12 +59,6 @@ QWEATHER_JWT_KID=
 QWEATHER_JWT_PRIVATE_KEY=
 ```
 
-### API Key 认证配置（不推荐）
-
-```env
-QWEATHER_APIKEY=
-```
-
 ## API 主机配置
 
 参考文档 [API 配置](https://dev.qweather.com/docs/configuration/api-config/) 在 [控制台-设置](https://console.qweather.com/setting) 获取地址。务必添加 scheme `https://`
@@ -82,17 +66,6 @@ QWEATHER_APIKEY=
 ```env
 # API 主机地址，默认为 https://api.qweather.com
 QWEATHER_APIHOST=https://api.qweather.com
-```
-
-## API 订阅类型
-
-参考 [订阅](https://dev.qweather.com/docs/finance/subscription/#comparison)
-
-```env
-# 0 = 免费订阅 (3-7 天天气预报)
-# 1 = 标准订阅 (3-30 天天气预报)
-# 2 = 高级订阅 (3-30 天天气预报)
-QWEATHER_APITYPE=0
 ```
 
 ## 天气预报配置

@@ -178,6 +178,13 @@ p.realtime-text {
   color: white;
 }
 
+.air-effect {
+  margin-top: 12px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+}
+
 .air-box {
   display: flex;
   justify-content: space-between;

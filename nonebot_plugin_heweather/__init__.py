@@ -9,7 +9,7 @@ from nonebot_plugin_alconna import Alconna, Args, UniMessage, on_alconna
 
 from .config import Config, plugin_config
 from .render_pic import render
-from .weather_data import CityNotFoundError, ConfigError, Weather
+from .weather_data import CityNotFoundError, Weather
 
 __plugin_meta__ = PluginMetadata(
     name="和风天气",
@@ -38,13 +38,7 @@ weather.shortcut(r"^天气(?P<city>.+)$", {"args": ["{city}"], "fuzzy": False})
 
 @weather.handle()
 async def _(matcher: Matcher, city: str):
-    if not (plugin_config.qweather_apikey or plugin_config.qweather_use_jwt):
-        raise ConfigError("请设置 QWEATHER_APIKEY 或 JWT ")
-
-    if plugin_config.qweather_apitype is None:
-        raise ConfigError("请设置 QWEATHER_APITYPE")
-
-    w_data = Weather(city_name=city, api_type=plugin_config.qweather_apitype)
+    w_data = Weather(city_name=city)
     try:
         await w_data.load_data()
     except CityNotFoundError:

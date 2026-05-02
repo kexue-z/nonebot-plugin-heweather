@@ -84,37 +84,44 @@ function color() {
     {% if air %}
     <div class="air" id="air">
       <div class="air-box-top">
-          <span class="air-tag" style="background-color:{{ air['tag_color'] }};">{{ air["aqi"] }} {{ air["category"] }}</span>
+          {% if air['color'] %}
+          <span class="air-tag" style="background-color:rgba({{ air['color'].red }}, {{ air['color'].green }}, {{ air['color'].blue }}, {{ air['color'].alpha }});">{{ air["aqi"] }} {{ air["category"] }}</span>
+          {% else %}
+          <span class="air-tag">{{ air["aqi"] }} {{ air["category"] }}</span>
+          {% endif %}
+          {% if air['effect'] %}
+          <p class="air-effect">{{ air['effect'] }}</p>
+          {% endif %}
       </div>
       <div class="air-box">
           <div class="air-data">
-              <p>{{ air["pm2p5"] }}</p>
-              <meter value="{{ air['pm2p5'] }}" min="0" max="200"></meter>
+              <p>{{ air["pm2p5"] or "-" }}</p>
+              <meter value="{{ air['pm2p5'] or 0 }}" min="0" max="200"></meter>
               <p class="des">PM2.5</p>
           </div>
           <div class="air-data">
-              <p>{{ air["pm10"] }}</p>
-              <meter value="{{ air['pm10'] }}" min="0" max="200"></meter>
+              <p>{{ air["pm10"] or "-" }}</p>
+              <meter value="{{ air['pm10'] or 0 }}" min="0" max="200"></meter>
               <p class="des">PM10</p>
           </div>
           <div class="air-data">
-              <p>{{ air["o3"] }}</p>
-              <meter value="{{ air['o3'] }}" min="0" max="200"></meter>
+              <p>{{ air["o3"] or "-" }}</p>
+              <meter value="{{ air['o3'] or 0 }}" min="0" max="200"></meter>
               <p class="des">O<sub>3</sub></p>
           </div>
           <div class="air-data">
-              <p>{{ air["co"] }}</p>
-              <meter value="{{ air['co'] }}" min="0" max="200"></meter>
+              <p>{{ air["co"] or "-" }}</p>
+              <meter value="{{ air['co'] or 0 }}" min="0" max="200"></meter>
               <p class="des">CO</p>
           </div>
           <div class="air-data">
-              <p>{{ air["no2"] }}</p>
-              <meter value="{{ air['no2'] }}" min="0" max="200"></meter>
+              <p>{{ air["no2"] or "-" }}</p>
+              <meter value="{{ air['no2'] or 0 }}" min="0" max="200"></meter>
               <p class="des">NO<sub>2</sub></p>
           </div>
           <div class="air-data">
-              <p>{{ air["so2"] }}</p>
-              <meter value="{{ air['so2'] }}" min="0" max="200"></meter>
+              <p>{{ air["so2"] or "-" }}</p>
+              <meter value="{{ air['so2'] or 0 }}" min="0" max="200"></meter>
               <p class="des">SO<sub>2</sub></p>
           </div>
       </div>

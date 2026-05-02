@@ -13,8 +13,6 @@ def _():
 
     config = nonebot.get_driver().config
 
-    config.qweather_apikey = getenv("QWEATHER_APIKEY")
-    config.qweather_apitype = getenv("QWEATHER_APITYPE")
     config.qweather_forecase_days = getenv("QWEATHER_FORECASE_DAYS")
 
     # 加载插件

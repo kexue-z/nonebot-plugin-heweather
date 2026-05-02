@@ -5,7 +5,7 @@ import platform
 from nonebot_plugin_htmlrender import template_to_pic
 
 from .config import plugin_config
-from .model import Air, Daily, Hourly, HourlyType
+from .model import Air, AirApi, Daily, Hourly, HourlyType
 from .weather_data import Weather
 
 
@@ -14,8 +14,7 @@ async def render(weather: Weather) -> bytes:
 
     air = None
     if weather.air:
-        if weather.air.now:
-            air = add_tag_color(weather.air.now)
+        air = extract_air_data(weather.air)
 
     return await template_to_pic(
         template_path=template_path,
@@ -33,6 +32,55 @@ async def render(weather: Weather) -> bytes:
             "base_url": f"file://{template_path}",
         },
     )
+
+
+def extract_air_data(air_api: AirApi) -> Air | None:
+    index = _select_aqi_index(air_api.indexes)
+    if not index:
+        return None
+
+    pollutants = {p.code: p for p in air_api.pollutants}
+
+    primary_pollutant = None
+    if index.primaryPollutant:
+        primary_pollutant = index.primaryPollutant.name
+
+    effect = None
+    if index.health:
+        effect = index.health.effect
+
+    return Air(
+        category=index.category,
+        aqi=index.aqiDisplay,
+        aqiDisplay=index.aqiDisplay,
+        level=index.level,
+        color=index.color,
+        primaryPollutant=primary_pollutant,
+        effect=effect,
+        pm2p5=_get_pollutant_value(pollutants, "pm2p5"),
+        pm10=_get_pollutant_value(pollutants, "pm10"),
+        o3=_get_pollutant_value(pollutants, "o3"),
+        co=_get_pollutant_value(pollutants, "co"),
+        no2=_get_pollutant_value(pollutants, "no2"),
+        so2=_get_pollutant_value(pollutants, "so2"),
+    )
+
+
+def _select_aqi_index(indexes):
+    for idx in indexes:
+        if idx.code == "qaqi":
+            return idx
+    for idx in indexes:
+        if idx.code == "us-epa":
+            return idx
+    return indexes[0] if indexes else None
+
+
+def _get_pollutant_value(pollutants: dict, code: str) -> str | None:
+    pollutant = pollutants.get(code)
+    if pollutant and pollutant.concentration:
+        return str(pollutant.concentration.value)
+    return None
 
 
 def add_hour_data(hourly: list[Hourly]):
@@ -77,16 +125,3 @@ def add_date(daily: list[Daily]):
         day.date = f"{_month}月{_day}日"
 
     return daily
-
-
-def add_tag_color(air: Air):
-    color = {
-        "优": "#95B359",
-        "良": "#A9A538",
-        "轻度污染": "#E0991D",
-        "中度污染": "#D96161",
-        "重度污染": "#A257D0",
-        "严重污染": "#D94371",
-    }
-    air.tag_color = color[air.category]
-    return air
