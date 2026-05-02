@@ -26,7 +26,12 @@ if plugin_config.debug:
     logger.debug("将会保存图片到 weather.png")
 
 
-weather = on_alconna(Alconna("天气", Args["city", str]), block=True, priority=1)
+weather = on_alconna(
+    Alconna("天气", Args["city", str]),
+    block=True,
+    priority=1,
+    use_cmd_start=False,
+)
 weather.shortcut(r"^(?P<city>.+)天气$", {"args": ["{city}"], "fuzzy": False})
 weather.shortcut(r"^天气(?P<city>.+)$", {"args": ["{city}"], "fuzzy": False})
 
