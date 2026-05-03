@@ -6,7 +6,7 @@
 
 # nonebot-plugin-heweather
 
-_✨ 获取和风天气信息并转换为图片 ✨_
+_✨ 获取和风天气信息并转换为图片，支持每日定时推送 ✨_
 
 </div>
 
@@ -17,7 +17,7 @@ _✨ 获取和风天气信息并转换为图片 ✨_
   <a href="https://pypi.org/project/nonebot-plugin-heweather/">
     <img src="https://img.shields.io/pypi/v/nonebot-plugin-heweather" alt="pypi">
   </a>
-  <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="python">
+  <img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="python">
 </p>
 
 <div align="center">
@@ -27,8 +27,20 @@ _✨ 获取和风天气信息并转换为图片 ✨_
 <img src="docs/weather.png"  width="50%">
 </div>
 
-- 使用了~~自产自销的~~[nonebot-plugin-htmlrender](https://github.com/kexue-z/nonebot-plugin-htmlrender)
-- **需要先保证 playwright 可以正常运行并在系统（或容器中）存在中文字体**
+## 功能特性
+
+- 天气查询：输入城市名称获取实时天气信息
+- 每日推送：订阅每日定时天气预报，支持群聊和私聊
+- 跨平台兼容：基于 nonebot-plugin-alconna，支持多种聊天适配器
+
+## 依赖
+
+- [nonebot-plugin-htmlrender](https://github.com/nonebot/plugin-htmlrender) - HTML 渲染
+- [nonebot-plugin-alconna](https://github.com/nonebot/plugin-alconna) - 跨适配器命令处理
+- [nonebot-plugin-apscheduler](https://github.com/nonebot/plugin-apscheduler) - 定时任务
+- [nonebot-plugin-localstore](https://github.com/nonebot/plugin-localstore) - 数据持久化
+
+**需要先保证 playwright 可以正常运行并在系统（或容器中）存在中文字体**
 
 # 安装
 
@@ -38,8 +50,24 @@ _✨ 获取和风天气信息并转换为图片 ✨_
 
 # 指令
 
+## 天气查询
+
 `天气+地区` 或 `地区+天气`  
 例如：`上海天气` 或 `天气广州`
+
+## 每日推送
+
+| 指令 | 说明 | 示例 |
+|------|------|------|
+| `天气订阅 城市 HH:MM` | 订阅每日天气推送 | `天气订阅 上海 08:30` |
+| `天气取消订阅` | 取消当前订阅 | `天气取消订阅` |
+| `天气订阅状态` | 查看当前订阅配置 | `天气订阅状态` |
+
+**说明：**
+- 推送时间使用 24 小时制，格式为 `HH:MM`
+- 每个群聊/用户可订阅多个城市
+- 群聊中需要管理员权限才能管理订阅
+- 订阅数据保存在 NoneBot 数据目录中
 
 # 配置
 
